@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Город как текст — Квест</title>
+<meta name="description" content="Интерактивный маршрут-квест по историческим локусам Петербурга: отвечайте на вопросы и открывайте культурные слои города.">
+</head>
+<body>
+<!-- =====================================================================
+СТРАНИЦА-КВЕСТ «Город как текст»
+Дополнительный блок к лонгриду «Город как текст»
+Вставлять целиком в блок T123 (HTML) на Tilda Publishing.
+Всё (HTML + CSS + JS) внутри одного блока — внешних зависимостей нет.
+=====================================================================
+КАК НАПОЛНИТЬ КОНТЕНТОМ ПОЗЖЕ:
+1. Вопросы и варианты — секция data.questions ниже (ищите «ВОПРОС»).
+2. Тексты «взглядов» — секция LOCI ниже (ищите «ВЗГЛЯД»).
+Тексты уже готовы из ТЗ (раздел 7); вопросы пока заглушки.
+3. Картинки локусов: по умолчанию фото подгружается АВТОМАТИЧЕСКИ из
+Википедии (поле `wiki` — название статьи). Чтобы поставить своё
+изображение из медиатеки Tilda — впишите URL в поле `image`,
+тогда автозагрузка для этого локуса отключится.
+4. Карта: скрипт ПЕРЕИСПОЛЬЗУЕТ карту, уже встроенную в лонгрид
+(ищет первый <svg> внутри элемента с id/классом карты), убирает
+старые точки и рисует 8 новых. См. блок «КАРТА» в JS и переменную
+MAP_SELECTOR + массив координат COORDS.
+===================================================================== -->
+<div id="lq-quest" class="lq-root" aria-label="Квест: Город как текст">
+<!-- ЛЕВАЯ КОЛОНКА: sticky-карта + счётчик -->
+<aside class="lq-mapcol">
+<div class="lq-mapcard">
+<div class="lq-counter">
+<span class="lq-counter-label">Баллы</span>
+<span class="lq-counter-value"><span id="lq-score">0</span> / <span id="lq-total">8</span></span>
+</div>
+<!-- Сюда скрипт вставит карту из лонгрида (или схему-заглушку) -->
+<div id="lq-map" class="lq-map" role="img" aria-label="Карта Петербурга с локусами квеста"></div>
+<!-- Компактная легенда культур -->
+<ul class="lq-legend" aria-hidden="true">
+<li><i class="lq-dot lq-de"></i>Немецкий</li>
+<li><i class="lq-dot lq-it"></i>Итальянский</li>
+<li><i class="lq-dot lq-fr"></i>Французский</li>
+</ul>
+</div>
+</aside>
+<!-- ПРАВАЯ КОЛОНКА: лента квеста -->
+<main class="lq-feed">
+<header class="lq-intro lq-reveal">
+<p class="lq-kicker">Интерактивный маршрут</p>
+<div class="lq-intro__row">
+<a class="lq-back" href="index.html">← На главную страницу</a>
+<h2 class="lq-title">Город как текст</h2>
+</div>
+<p class="lq-lead">Добро пожаловать в квест «Город как текст»! Петербург редко раскрывает свои истории с первого взгляда. За знакомыми фасадами, площадями и набережными скрываются следы людей, которые приехали сюда из Германии, Франции и Италии и вместе создавали облик города. Перед вами карта Петербурга, но это необычный маршрут. Чтобы открыть новый локус, сначала попробуйте ответить на вопрос. За правильный ответ с первой попытки вы получите балл, а затем сможете познакомиться с историей этого места. Исследуйте карту, открывайте новые точки и узнайте, сколько культурных следов вам удастся найти.</p>
+</header>
+<!-- Сюда скрипт сгенерирует секции локусов -->
+<div id="lq-loci"></div>
+<!-- Финал -->
+<section id="lq-final" class="lq-final lq-reveal" aria-live="polite">
+<p class="lq-kicker">Итог квеста</p>
+<h3 class="lq-final-title">Ваш результат</h3>
+<p class="lq-final-score"><span id="lq-final-num">0</span> из <span id="lq-final-total">8</span></p>
+<p class="lq-final-text">Маршрут завершён! Вы открыли новые страницы истории Петербурга и увидели, что этот город невозможно описать одной культурой. Он складывается из множества историй, языков и традиций, которые продолжают жить в его улицах, зданиях и площадях. Спасибо за прогулку! Надеемся, что в следующий раз, оказавшись в Петербурге, вы заметите то, что раньше оставалось незамеченным.</p>
+<button type="button" class="lq-restart" id="lq-restart">Пройти заново</button>
+</section>
+</main>
+</div>
+<style>
+/* ============================ ПАЛИТРА / СТИЛЬ ============================
+Подобрана под лонгрид «Город как текст»: тёмный графит, тёплый кремовый
+фон карточек, сдержанные акценты. Культуры по ТЗ: DE=красный, IT=зелёный,
+FR=синий. Меняется в одном месте — :root. */
+#lq-quest{
+--ink:#1d1b18; /* основной текст */
+--ink-soft:#5b554d; /* вторичный текст */
+--paper:#f4efe7; /* фон страницы-квеста */
+--card:#fffdf8; /* фон карточек */
+--line:#e0d8cb; /* линии/границы */
+--accent:#8a6d3b; /* тёплый акцент (заголовки-кикеры) */
+--de:#b23b34; /* немецкий — красный */
+--it:#3c7a4e; /* итальянский — зелёный */
+--fr:#2f5d8a; /* французский — синий */
+--radius:14px;
+--shadow:0 8px 30px rgba(40,33,22,.10);
+--serif:Georgia,'Times New Roman',serif;
+--sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+}
+/* Скоупим всё под #lq-quest, чтобы не задеть стили Tilda */
+#lq-quest *,#lq-quest *::before,#lq-quest *::after{box-sizing:border-box}
+#lq-quest{
+font-family:var(--sans);
+color:var(--ink);
+background:var(--paper);
+line-height:1.55;
+display:grid;
+grid-template-columns:minmax(280px,360px) 1fr;
+gap:36px;
+max-width:1200px;
+margin:0 auto;
+padding:40px 24px 80px;
+align-items:stretch;
+overflow:visible;
+}
+/* ---------- Кнопка «На главную» ---------- */
+#lq-quest .lq-back{
+flex:none;
+display:inline-flex;align-items:center;white-space:nowrap;
+font-size:14px;font-weight:500;color:var(--ink);text-decoration:none;
+background:var(--card);border:1px solid var(--line);border-radius:40px;
+padding:10px 18px;
+transition:background .2s,border-color .2s,transform .2s;
+}
+#lq-quest .lq-back:hover{
+background:#fff;border-color:var(--accent);transform:translateX(-2px);
+}
+/* ---------- ЛЕВАЯ КОЛОНКА: sticky-карта ---------- */
+#lq-quest .lq-mapcol{
+position:relative;
+align-self:stretch;
+padding-top:28px; /* на уровне строки «кнопка + заголовок» (после kicker) */
+min-height:100%;
+}
+#lq-quest .lq-mapcard-ph{display:none}
+#lq-quest .lq-mapcard{
+position:-webkit-sticky;
+position:sticky;
+top:24px;
+z-index:20;
+max-height:calc(100vh - 48px);
+overflow:auto;
+background:var(--card);
+border:1px solid var(--line);
+border-radius:var(--radius);
+box-shadow:var(--shadow);
+padding:18px;
+}
+#lq-quest .lq-mapcard.is-pinned{
+position:fixed;
+overflow:auto;
+}
+#lq-quest .lq-mapcard.is-pinned-bottom{
+position:absolute;
+top:auto;
+bottom:0;
+left:0;
+right:0;
+width:auto;
+}
+#lq-quest .lq-counter{
+display:flex;align-items:baseline;justify-content:space-between;
+margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--line);
+}
+#lq-quest .lq-counter-label{
+font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);
+}
+#lq-quest .lq-counter-value{font-family:var(--serif);font-size:26px;font-weight:700}
+#lq-quest .lq-counter-value.bump{animation:lq-bump .5s ease}
+@keyframes lq-bump{0%{transform:scale(1)}30%{transform:scale(1.28);color:var(--it)}100%{transform:scale(1)}}
+#lq-quest .lq-map{width:100%;border-radius:10px;overflow:hidden}
+#lq-quest .lq-map svg{display:block;width:100%;height:auto}
+/* состояния точек на карте (применяются и к встроенной карте лонгрида) */
+#lq-quest .lq-pin{transition:all .45s ease;cursor:default}
+#lq-quest .lq-pin .lq-pin-core{transition:all .45s ease}
+#lq-quest .lq-pin[data-state="idle"] .lq-pin-core{fill:#c7bfb2}
+#lq-quest .lq-pin[data-state="current"] .lq-pin-core{fill:var(--accent)}
+#lq-quest .lq-pin[data-state="current"]{animation:lq-pulse 1.6s ease-in-out infinite}
+#lq-quest .lq-pin[data-state="done"] .lq-pin-core{fill:var(--it)}
+#lq-quest .lq-pin-check{opacity:0;transition:opacity .4s ease}
+#lq-quest .lq-pin[data-state="done"] .lq-pin-check{opacity:1}
+@keyframes lq-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+#lq-quest .lq-pin{transform-box:fill-box;transform-origin:center}
+#lq-quest .lq-legend{
+list-style:none;margin:14px 0 0;padding:14px 0 0;border-top:1px solid var(--line);
+display:flex;flex-wrap:wrap;gap:10px 16px;font-size:12.5px;color:var(--ink-soft);
+}
+#lq-quest .lq-legend li{display:flex;align-items:center;gap:6px}
+#lq-quest .lq-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+#lq-quest .lq-dot.lq-de{background:var(--de)}
+#lq-quest .lq-dot.lq-it{background:var(--it)}
+#lq-quest .lq-dot.lq-fr{background:var(--fr)}
+/* ---------- ПРАВАЯ КОЛОНКА: лента ---------- */
+#lq-quest .lq-feed{min-width:0}
+#lq-quest .lq-kicker{
+font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+margin:0 0 8px;
+}
+#lq-quest .lq-intro{margin-bottom:48px}
+#lq-quest .lq-intro__row{
+display:flex;align-items:center;gap:20px 28px;
+flex-wrap:wrap;margin-bottom:16px;
+}
+#lq-quest .lq-intro__row .lq-title{margin:0;flex:1;min-width:min(100%,220px)}
+#lq-quest .lq-title{font-family:var(--serif);font-size:clamp(28px,4vw,42px);line-height:1.1;margin:0 0 16px}
+#lq-quest .lq-lead{font-size:20px;line-height:1.65;color:var(--ink-soft);max-width:62ch}
+#lq-quest .lq-locus{
+border-top:1px solid var(--line);
+padding-top:34px;margin-top:48px;
+}
+#lq-quest .lq-locus:first-child{border-top:none;margin-top:0;padding-top:0}
+#lq-quest .lq-locus-no{
+font-family:var(--serif);font-size:14px;color:var(--accent);
+letter-spacing:.08em;margin-bottom:10px;
+}
+/* Вопрос */
+#lq-quest .lq-question{margin-bottom:18px}
+#lq-quest .lq-q-text{font-family:var(--serif);font-size:21px;line-height:1.35;margin:0 0 16px}
+#lq-quest .lq-options{display:grid;gap:10px}
+#lq-quest .lq-option{
+text-align:left;font-size:16px;font-family:var(--sans);color:var(--ink);
+background:var(--card);border:1px solid var(--line);border-radius:10px;
+padding:13px 16px;cursor:pointer;transition:border-color .2s,background .2s,transform .1s;
+}
+#lq-quest .lq-option:hover:not(:disabled){border-color:var(--accent);transform:translateX(2px)}
+#lq-quest .lq-option:disabled{cursor:default}
+#lq-quest .lq-option.is-correct{
+border-color:var(--it);background:rgba(60,122,78,.12);color:var(--it);font-weight:600;
+}
+#lq-quest .lq-option.is-wrong{
+border-color:var(--de);background:rgba(178,59,52,.08);color:var(--de);
+opacity:.85;text-decoration:line-through;
+}
+#lq-quest .lq-option.is-dim{opacity:.45}
+#lq-quest .lq-feedback{
+margin-top:14px;font-size:15px;padding:10px 14px;border-radius:8px;
+display:none;
+}
+#lq-quest .lq-feedback.ok{display:block;background:rgba(60,122,78,.10);color:var(--it)}
+#lq-quest .lq-feedback.miss{display:block;background:rgba(138,109,59,.10);color:var(--accent)}
+/* Карточка локуса (раскрывается по высоте) */
+#lq-quest .lq-card{
+display:grid;grid-template-columns:1fr;gap:0;
+max-height:0;overflow:hidden;opacity:0;
+transition:max-height .6s ease,opacity .5s ease,margin .4s ease;
+margin-top:0;
+}
+#lq-quest .lq-card.open{opacity:1;margin-top:20px;padding-bottom:12px}
+#lq-quest .lq-card-media{
+width:100%;aspect-ratio:16/10;background:#ece5d8;position:relative;overflow:hidden;
+border-radius:12px;border:1px solid var(--line);
+display:flex;align-items:center;justify-content:center;color:#b3a890;font-size:13px;
+}
+#lq-quest .lq-card-img{
+width:100%;height:100%;object-fit:cover;display:block;
+opacity:0;transition:opacity .5s ease;
+}
+#lq-quest .lq-card-img.ready{opacity:1}
+#lq-quest .lq-card-media.noimg::after{content:"изображение локуса";color:#b3a890;font-size:13px}
+#lq-quest .lq-media-ph{color:#b3a890;font-size:13px}
+#lq-quest .lq-card-name{
+font-family:var(--serif);font-size:24px;margin:16px 0 4px;
+}
+#lq-quest .lq-card-addr{
+font-size:13.5px;letter-spacing:.02em;color:var(--accent);opacity:.78;
+font-style:normal;
+}
+/* Кнопки «взглядов» + аккордеон */
+#lq-quest .lq-views{margin-top:18px;display:grid;gap:10px;padding-bottom:4px}
+#lq-quest .lq-view{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card)}
+#lq-quest .lq-view-btn{
+width:100%;text-align:left;background:none;border:none;cursor:pointer;
+padding:13px 16px;font-size:16px;font-family:var(--sans);color:var(--ink);
+display:flex;align-items:center;gap:10px;transition:background .2s;
+}
+#lq-quest .lq-view-btn .lq-vchip{width:11px;height:11px;border-radius:50%;flex:none}
+#lq-quest .lq-view-btn .lq-varrow{margin-left:auto;transition:transform .3s;opacity:.5}
+#lq-quest .lq-view.open .lq-view-btn .lq-varrow{transform:rotate(180deg)}
+#lq-quest .lq-view-body{max-height:0;overflow:hidden;transition:max-height .45s ease}
+#lq-quest .lq-view-body-inner{padding:0 16px 16px;font-size:15.5px;color:var(--ink-soft);line-height:1.6}
+#lq-quest .lq-view.read .lq-view-btn{font-weight:600}
+#lq-quest .lq-view.read .lq-view-btn::after{
+content:"прочитано";margin-left:8px;font-size:11px;letter-spacing:.08em;
+text-transform:uppercase;color:var(--ink-soft);font-weight:400;opacity:.7;
+}
+/* окраска по культуре */
+#lq-quest .lq-view[data-c="de"] .lq-vchip{background:var(--de)}
+#lq-quest .lq-view[data-c="it"] .lq-vchip{background:var(--it)}
+#lq-quest .lq-view[data-c="fr"] .lq-vchip{background:var(--fr)}
+#lq-quest .lq-view[data-c="de"]:hover .lq-view-btn{background:rgba(178,59,52,.07)}
+#lq-quest .lq-view[data-c="it"]:hover .lq-view-btn{background:rgba(60,122,78,.07)}
+#lq-quest .lq-view[data-c="fr"]:hover .lq-view-btn{background:rgba(47,93,138,.07)}
+#lq-quest .lq-view[data-c="de"].open{border-color:var(--de)}
+#lq-quest .lq-view[data-c="it"].open{border-color:var(--it)}
+#lq-quest .lq-view[data-c="fr"].open{border-color:var(--fr)}
+/* Финал */
+#lq-quest .lq-final{
+border-top:1px solid var(--line);margin-top:56px;padding-top:40px;text-align:center;
+}
+#lq-quest .lq-final-title{font-family:var(--serif);font-size:30px;margin:0 0 6px}
+#lq-quest .lq-final-score{font-family:var(--serif);font-size:48px;font-weight:700;margin:0 0 14px}
+#lq-quest .lq-final-text{color:var(--ink-soft);max-width:50ch;margin:0 auto 24px}
+#lq-quest .lq-restart{
+font-size:15px;padding:12px 26px;border-radius:30px;cursor:pointer;
+background:var(--ink);color:#fff;border:none;transition:opacity .2s;
+}
+#lq-quest .lq-restart:hover{opacity:.85}
+/* ---------- Scroll-reveal ---------- */
+#lq-quest .lq-reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+#lq-quest .lq-reveal.in{opacity:1;transform:none}
+/* ---------- Адаптив: карта наверх, в полосу прогресса ---------- */
+@media (max-width:860px){
+#lq-quest{grid-template-columns:1fr;gap:0;padding:20px 16px 60px}
+#lq-quest .lq-mapcol{padding-top:0;position:sticky;top:0;z-index:30;margin:0 -16px 24px}
+#lq-quest .lq-intro__row{gap:12px 16px;margin-bottom:12px}
+#lq-quest .lq-back{font-size:13px;padding:9px 14px;white-space:normal}
+#lq-quest .lq-mapcard{
+position:static;border-radius:0;border-left:none;border-right:none;
+padding:10px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 4px 16px rgba(40,33,22,.08);
+}
+#lq-quest .lq-counter{margin:0;padding:0;border:none;flex-direction:column;align-items:flex-start;flex:none}
+#lq-quest .lq-counter-value{font-size:20px}
+/* карта сворачивается в тонкую полосу-трек */
+#lq-quest .lq-map{flex:1;max-height:46px}
+#lq-quest .lq-map svg{max-height:46px;width:auto;margin:0 auto}
+#lq-quest .lq-legend{display:none}
+}
+/* ---------- prefers-reduced-motion ---------- */
+@media (prefers-reduced-motion:reduce){
+#lq-quest .lq-reveal{opacity:1;transform:none;transition:none}
+#lq-quest .lq-card{transition:max-height .01s linear,opacity .2s}
+#lq-quest .lq-pin,#lq-quest .lq-pin .lq-pin-core,#lq-quest .lq-view-body,
+#lq-quest .lq-counter-value.bump{animation:none!important;transition:opacity .2s!important}
+#lq-quest .lq-pin[data-state="current"]{animation:none}
+}
+</style>
+<script>
+(function(){
+"use strict";
+var HOME_URL = "index.html"; /* главная страница лонгрида */
+var backLink = document.querySelector("#lq-quest .lq-back");
+if(backLink) backLink.setAttribute("href", HOME_URL);
+/* =====================================================================
+ДАННЫЕ ЛОКУСОВ
+---------------------------------------------------------------------
+• question / options / answer — пока ЗАГЛУШКИ: впишите формулировки.
+answer = индекс правильного варианта в массиве options.
+miss — утешительная фраза при неверном ответе.
+• address — РЕАЛЬНЫЙ адрес (улица, дом) в Санкт-Петербурге. Выводится
+под названием локуса и в подписи к маркеру на карте. Если адрес
+неизвестен — впишите ближайший ориентир (напр. «Невский пр., 32»).
+Можно править прямо здесь: address:"Университетская наб., 7",
+• image — URL картинки из медиатеки Tilda (пока пусто → плейсхолдер).
+• views — «взгляды»: тексты уже взяты из ТЗ (раздел 7).
+cultures у локуса = порядок и число кнопок (2 или 3).
+===================================================================== */
+var LOCI = [
+{
+id:"locus-01", no:"Локус 01", name:"Смоленское кладбище",
+address:"наб. реки Смоленки, 27",
+wiki:"Смоленское_лютеранское_кладбище",
+imgFallback:"https://commons.wikimedia.org/wiki/Special:FilePath/%D0%A1%D0%BC%D0%BE%D0%BB%D0%B5%D0%BD%D1%81%D0%BA%D0%BE%D0%B5%20%D0%BB%D1%8E%D1%82%D0%B5%D1%80%D0%B0%D0%BD%D1%81%D0%BA%D0%BE%D0%B5.%20%D0%92%D0%BE%D1%80%D0%BE%D1%82%D0%B001.jpg?width=800",
+question:"Представители какой культуры наиболее широко представлены на Смоленском кладбище?",
+options:["Французской","Немецкой","Итальянской","Английской"],
+answer:1,
+miss:"Не страшно — двигаемся дальше, карточка уже открыта.",
+image:"",
+views:[
+{c:"de", title:"Немецкий взгляд", text:"Историческое ядро — немецкий некрополь: здесь покоятся Фридрих Шуберт, Борис Якоби, Георг Раух."},
+{c:"it", title:"Итальянский взгляд", text:"Итальянский слой представлен именами Гаэтано Чинизелли, Джузеппе Лукини, Антонио Адамини."},
+{c:"fr", title:"Французский взгляд", text:"Французский след самый редкий — среди заметных имён Ксавье де Местр."}
+]
+},
+{
+id:"locus-02", no:"Локус 02", name:"Летний сад",
+address:"наб. Кутузова, 2",
+wiki:"Летний_сад",
+imgFallback:"https://commons.wikimedia.org/wiki/Special:FilePath/%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%2C%20%D0%9B%D0%B5%D1%82%D0%BD%D0%B8%D0%B9%20%D1%81%D0%B0%D0%B4.%20%D0%93%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F%20%D0%B0%D0%BB%D0%BB%D0%B5%D1%8F%201.jpg?width=800",
+question:"Кто разработал первоначальный проект Летнего сада?",
+options:["Жан-Батист Леблон","Карло Росси","Георг Маттарнови","Бартоломео Растрелли"],
+answer:0,
+miss:"Не страшно — двигаемся дальше, карточка уже открыта.",
+image:"",
+views:[
+{c:"fr", title:"Французский взгляд", text:"Планировку Летнего сада разработал француз Жан-Батист Леблон. Благодаря ему здесь появились характерные черты регулярного французского парка — строгая геометрия, симметрия и продуманная композиция."},
+{c:"it", title:"Итальянский взгляд", text:"В оформлении сада участвовали Растрелли и другие итальянские мастера. Их работы придали Летнему саду черты европейского барокко и сделали его одним из самых изысканных парков Петербурга."},
+{c:"de", title:"Немецкий взгляд", text:"Немецкий след проявляется в отдельных деталях. Здесь находится скульптура Генриха Мейринга, а памятник Ивану Крылову создал архитектор Пётр Клодт, происходивший из русско-немецкой семьи."}
+]
+},
+{
+id:"locus-03", no:"Локус 03", name:"Здание Двенадцати коллегий",
+address:"Университетская наб., 7",
+wiki:"Здание_двенадцати_коллегий",
+imgFallback:"https://commons.wikimedia.org/wiki/Special:FilePath/%D0%97%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D0%B4%D0%B2%D0%B5%D0%BD%D0%B0%D0%B4%D1%86%D0%B0%D1%82%D0%B8%20%D0%BA%D0%BE%D0%BB%D0%BB%D0%B5%D0%B3%D0%B8%D0%B9.jpg?width=800",
+question:"Кто является автором проекта здания Двенадцати коллегий?",
+options:["Теодор Швертфегер","Доменико Трезини","Карло Росси","Огюст Монферран"],
+answer:1,
+miss:"Не страшно — двигаемся дальше, карточка уже открыта.",
+image:"",
+views:[
+{c:"it", title:"Итальянский взгляд", text:"Проект здания создал Доменико Трезини — один из архитекторов, сформировавших ранний облик Петербурга. Его идеи заложили основу для строительства этого комплекса."},
+{c:"de", title:"Немецкий взгляд", text:"После Трезини строительство завершил архитектор Теодор Швертфегер. Его работа позволила воплотить первоначальный проект в жизнь."},
+{c:"fr", title:"Французский взгляд", text:"Принцип объединения корпусов в единый ансамбль перекликается с французской градостроительной традицией XVIII века, где большое внимание уделялось композиции городского пространства."}
+]
+},
+{
+id:"locus-04", no:"Локус 04", name:"Михайловский дворец",
+address:"Инженерная ул., 4",
+wiki:"Михайловский_дворец",
+imgFallback:"https://commons.wikimedia.org/wiki/Special:FilePath/Spb%2006-2012%20MichaelPalace.jpg?width=800",
+question:"С какой европейской страной связан стиль ампир, использованный в архитектуре Михайловского дворца?",
+options:["Франция","Германия","Италия","Австрия"],
+answer:0,
+miss:"Не страшно — двигаемся дальше, карточка уже открыта.",
+image:"",
+views:[
+{c:"it", title:"Итальянский взгляд", text:"Михайловский дворец связан прежде всего с именем Карло Росси — архитектора итальянского происхождения. В его проекте заметны любовь к гармоничным пропорциям, монументальным колоннадам и античным мотивам, которые восходят к традициям итальянской архитектуры."},
+{c:"fr", title:"Французский взгляд", text:"Архитектурный облик дворца создавался в стиле ампир. Этот стиль возник во Франции при Наполеоне и должен был прославлять мощь государства. Военная символика, торжественность фасада и строгая симметрия делают дворец ярким примером влияния французской культуры."},
+{c:"de", title:"Немецкий взгляд", text:"После свадьбы Михаила Павловича с принцессой Шарлоттой Вюртембергской дворец оказался связан с немецким культурным миром. Здесь собиралась европейская интеллектуальная элита, а немецкие гости стали частью культурной жизни дворца."}
+]
+},
+{
+id:"locus-05", no:"Локус 05", name:"Меншиковский дворец",
+address:"Университетская наб., 15",
+wiki:"Меншиковский_дворец",
+imgFallback:"https://commons.wikimedia.org/wiki/Special:FilePath/Menshikov%20Palace%20in%20SPB%2001.jpg?width=800",
+question:"Архитекторы каких двух национальностей стали авторами проекта Меншиковского дворца?",
+options:["Француз и немец","Итальянец и немец","Итальянец и русский","Немец и швед"],
+answer:1,
+miss:"Не страшно — двигаемся дальше, карточка уже открыта.",
+image:"",
+views:[
+{c:"it", title:"Итальянский взгляд", text:"В создании дворца участвовали сразу несколько итальянских архитекторов: Джованни Фонтана, Доменико Трезини и Бартоломео Растрелли. Именно они придали зданию характерные черты раннего петербургского барокко."},
+{c:"de", title:"Немецкий взгляд", text:"Одним из авторов проекта был немецкий архитектор Готфрид Шедель. Его участие напоминает о том, что строительство Петербурга с самого начала было международным проектом, в котором важную роль играли немецкие мастера."},
+{c:"fr", title:"Французский взгляд", text:"В работе над ансамблем принимал участие французский архитектор Жан-Батист Леблон. Через таких специалистов в Петербург проникали идеи французского градостроительства и европейской дворцовой культуры."}
+]
+},
+{
+id:"locus-06", no:"Локус 06", name:"Кунсткамера",
+address:"Университетская наб., 3",
+wiki:"Кунсткамера",
+imgFallback:"https://commons.wikimedia.org/wiki/Special:FilePath/Kunstkamera%20SPB.jpg?width=800",
+question:"Кто начал строительство Кунсткамеры?",
+options:["Георг Иоганн Маттарнови","Гаэтано Киавери","Карло Росси","Лео фон Кленце"],
+answer:0,
+miss:"Не страшно — двигаемся дальше, карточка уже открыта.",
+image:"",
+views:[
+{c:"de", title:"Немецкий взгляд", text:"Первый архитектор Кунсткамеры Георг Иоганн Маттарнови происходил из немецкой культурной среды. Сам музей отражал характерное для немецкого Просвещения стремление собирать, классифицировать и изучать окружающий мир."},
+{c:"it", title:"Итальянский взгляд", text:"После смерти Маттарнови строительство продолжил архитектор Гаэтано Киавери. Благодаря его работе здание приобрело многие черты, которые сегодня делают Кунсткамеру одним из самых узнаваемых символов Петербурга."}
+]
+},
+{
+id:"locus-07", no:"Локус 07", name:"Эрмитаж",
+address:"Дворцовая наб., 34",
+wiki:"",
+imgFallback:"https://media.kudago.com/images/place/73/bd/73bd43ecb0cb079470543c8b7e8aa711.jpg",
+question:"В каком городе Екатерина II приобрела первую коллекцию будущего Эрмитажа?",
+options:["Берлин","Париж","Рим","Вена"],
+answer:0,
+miss:"Не страшно — двигаемся дальше, карточка уже открыта.",
+image:"https://media.kudago.com/images/place/73/bd/73bd43ecb0cb079470543c8b7e8aa711.jpg",
+views:[
+{c:"de", title:"Немецкий взгляд", text:"История Эрмитажа начинается с Екатерины II, немецкой принцессы по происхождению. Первую коллекцию картин она приобрела в Берлине, а позднее в развитии музея участвовали немецкие учёные и архитекторы, включая Лео фон Кленце."},
+{c:"it", title:"Итальянский взгляд", text:"Зимний дворец, ставший частью музейного комплекса, был построен архитектором Бартоломео Растрелли. Его творчество оказало огромное влияние на формирование парадного архитектурного облика Петербурга."},
+{c:"fr", title:"Французский взгляд", text:"Само слово «эрмитаж» происходит от французского ermitage — «место уединения». Кроме того, философ Дени Дидро помогал Екатерине II формировать первые коллекции музея, а идея частных художественных собраний пришла из французской придворной культуры."}
+]
+},
+{
+id:"locus-08", no:"Локус 08", name:"Мариинский театр",
+address:"Театральная пл., 1",
+wiki:"Мариинский_театр",
+imgFallback:"https://commons.wikimedia.org/wiki/Special:FilePath/%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%2C_%D0%9C%D0%B0%D1%80%D0%B8%D0%B8%D0%BD%D1%81%D0%BA%D0%B8%D0%B9_%D1%82%D0%B5%D0%B0%D1%82%D1%80%2C_%D1%84%D0%B0%D1%81%D0%B0%D0%B4_%28edited_version%29.jpg?width=800",
+question:"Какая европейская культура оказала решающее влияние на появление балета в России?",
+options:["Французская","Немецкая","Итальянская","Испанская"],
+answer:0,
+miss:"Не страшно — двигаемся дальше, карточка уже открыта.",
+image:"https://upload.wikimedia.org/wikipedia/commons/4/44/%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%2C_%D0%9C%D0%B0%D1%80%D0%B8%D0%B8%D0%BD%D1%81%D0%BA%D0%B8%D0%B9_%D1%82%D0%B5%D0%B0%D1%82%D1%80%2C_%D1%84%D0%B0%D1%81%D0%B0%D0%B4_%28edited_version%29.jpg",
+views:[
+{c:"it", title:"Итальянский взгляд", text:"История Мариинского театра тесно связана с итальянской оперой. В XVIII-XIX веках именно итальянские композиторы, дирижёры и певцы определяли музыкальную жизнь Петербурга, а итальянский репертуар составлял основу многих постановок."},
+{c:"fr", title:"Французский взгляд", text:"Сам жанр большого придворного театра во многом развивался под влиянием французской культурной модели. Французский язык долгое время оставался языком аристократии, а французская театральная культура задавала стандарты сценического искусства."},
+{c:"de", title:"Немецкий взгляд", text:"На сцене театра регулярно исполнялись произведения немецких композиторов. Музыка Моцарта, Вагнера и других авторов стала важной частью репертуара, связывая Петербург с немецкой музыкальной традицией."}
+]
+}
+];
+/* Равномерно распределяем правильные ответы по позициям A–D (по 2 на каждую),
+внутри каждого вопроса неверные варианты перемешиваются случайно. */
+LOCI.forEach(function(loc){
+loc._origOptions = loc.options.slice();
+loc._origAnswer = loc.answer;
+});
+function shuffleArr(arr){
+for(var i = arr.length - 1; i > 0; i--){
+var j = Math.floor(Math.random() * (i + 1));
+var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+}
+return arr;
+}
+function balanceAnswerSlots(){
+var slots = [0, 1, 2, 3, 0, 1, 2, 3];
+shuffleArr(slots);
+LOCI.forEach(function(loc, idx){
+var correct = loc._origOptions[loc._origAnswer];
+var wrong = loc._origOptions.filter(function(opt, i){ return i !== loc._origAnswer; });
+shuffleArr(wrong);
+var target = slots[idx];
+var newOpts = [];
+var w = 0;
+for(var k = 0; k < loc._origOptions.length; k++){
+newOpts.push(k === target ? correct : wrong[w++]);
+}
+loc.options = newOpts;
+loc.answer = target;
+});
+}
+balanceAnswerSlots();
+/* =====================================================================
+КАРТА
+---------------------------------------------------------------------
+Скрипт ПЕРЕИСПОЛЬЗУЕТ карту, уже встроенную в лонгрид:
+1) ищет на странице SVG карты по MAP_SELECTOR,
+2) клонирует её в колонку квеста,
+3) УДАЛЯЕТ старые точки лонгрида (по STRIP_SELECTOR),
+4) рисует 8 новых точек-локусов по координатам COORDS.
+Если карта не найдена — рисуется аккуратная схема-заглушка (Нева),
+чтобы блок работал в любом случае.
+НАСТРОЙКА ПОД ВАШУ КАРТУ:
+• MAP_SELECTOR — селектор контейнера/SVG карты в лонгриде.
+Часто это блок Tilda вида '#rec123456789 svg' или '.t-cover svg'.
+Можно указать несколько вариантов через запятую — берётся первый.
+• STRIP_SELECTOR — что считать «старыми точками» и удалить.
+• COORDS — координаты 8 локусов В СИСТЕМЕ КООРДИНАТ ВАШЕЙ КАРТЫ
+(в единицах её viewBox). Подставьте реальные значения.
+===================================================================== */
+var MAP_SELECTOR = '.t-cover__carrier svg, [data-quest-map] svg, #quest-map svg';
+var STRIP_SELECTOR = 'circle, .t-map-point, [data-locus-old]';
+// координаты под ЗАГЛУШЕЧНУЮ карту (viewBox 0 0 360 300). Замените под лонгрид.
+var COORDS = [
+{x:118, y:96 }, // 01 Смоленское кладбище
+{x:236, y:120}, // 02 Летний сад
+{x:150, y:120}, // 03 Двенадцать коллегий
+{x:228, y:96 }, // 04 Михайловский дворец
+{x:138, y:150}, // 05 Меншиковский дворец
+{x:170, y:128}, // 06 Кунсткамера
+{x:206, y:150}, // 07 Эрмитаж
+{x:200, y:168} // 08 Мариинский театр
+];
+var FALLBACK_SVG =
+'<svg viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+
+'<rect width="360" height="300" fill="#eee7da"/>'+
+// Нева — условная схема рукавов
+'<path d="M0 175 C 90 150, 150 168, 210 150 S 320 120, 360 132 L 360 300 L 0 300 Z" fill="#cdd9df"/>'+
+'<path d="M120 150 C 150 175, 175 200, 200 235 L 150 300 L 90 300 Z" fill="#cdd9df"/>'+
+'<text x="300" y="120" font-family="Georgia,serif" font-size="11" fill="#9a8f7c">Нева</text>'+
+'</svg>';
+/* ---------------------------------------------------------------------
+Ниже — логика. Менять обычно не требуется.
+--------------------------------------------------------------------- */
+var root = document.getElementById('lq-quest');
+if(!root) return;
+var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var state = { score:0, total:LOCI.length, answered:{}, done:{}, finalShown:false };
+document.getElementById('lq-total').textContent = state.total;
+document.getElementById('lq-final-total').textContent = state.total;
+/* ---------- Построение карты ---------- */
+var mapHost = document.getElementById('lq-map');
+var pins = {}; // id локуса -> <g.lq-pin>
+function buildMap(){
+var svg = null;
+try{
+var found = MAP_SELECTOR ? document.querySelector(MAP_SELECTOR) : null;
+if(found && found !== mapHost.querySelector('svg')){
+svg = found.cloneNode(true);
+}
+}catch(e){ svg = null; }
+if(!svg){
+mapHost.innerHTML = FALLBACK_SVG;
+svg = mapHost.querySelector('svg');
+}else{
+mapHost.innerHTML = '';
+mapHost.appendChild(svg);
+// убрать старые точки лонгрида
+try{
+svg.querySelectorAll(STRIP_SELECTOR).forEach(function(n){ n.remove(); });
+}catch(e){}
+}
+// нарисовать новые точки
+var NS='http://www.w3.org/2000/svg';
+LOCI.forEach(function(loc, i){
+var c = COORDS[i] || {x:20+i*30, y:20};
+var g = document.createElementNS(NS,'g');
+g.setAttribute('class','lq-pin');
+g.setAttribute('data-state','idle');
+g.setAttribute('data-locus', loc.id);
+g.setAttribute('transform','translate('+c.x+','+c.y+')');
+var core = document.createElementNS(NS,'circle');
+core.setAttribute('class','lq-pin-core');
+core.setAttribute('r','7');
+core.setAttribute('stroke','#fffdf8');
+core.setAttribute('stroke-width','2');
+g.appendChild(core);
+// галочка для состояния «пройдено»
+var check = document.createElementNS(NS,'path');
+check.setAttribute('class','lq-pin-check');
+check.setAttribute('d','M -3 0 L -1 2.4 L 3.2 -2.6');
+check.setAttribute('fill','none');
+check.setAttribute('stroke','#fffdf8');
+check.setAttribute('stroke-width','1.8');
+check.setAttribute('stroke-linecap','round');
+check.setAttribute('stroke-linejoin','round');
+g.appendChild(check);
+var t = document.createElementNS(NS,'title');
+t.textContent = loc.no + '. ' + loc.name + (loc.address ? ' — ' + loc.address : '');
+g.appendChild(t);
+svg.appendChild(g);
+pins[loc.id] = g;
+});
+// первый локус — «текущий»
+if(LOCI[0]) setPinState(LOCI[0].id,'current');
+}
+function setPinState(id, st){
+var p = pins[id]; if(p) p.setAttribute('data-state', st);
+}
+/* ---------- Счётчик ---------- */
+function addScore(){
+state.score++;
+var el = document.getElementById('lq-score');
+el.textContent = state.score;
+var box = el.closest('.lq-counter-value');
+if(box && !prefersReduced){ box.classList.remove('bump'); void box.offsetWidth; box.classList.add('bump'); }
+// если финал уже показан — держим итоговое число в актуальном состоянии
+if(state.finalShown){
+var fn = document.getElementById('lq-final-num');
+if(fn) fn.textContent = state.score;
+}
+}
+/* ---------- Отметка локуса пройденным ---------- */
+function markDone(loc, idx){
+if(state.done[loc.id]) return;
+state.done[loc.id] = true;
+setPinState(loc.id, 'done');
+// следующий локус становится текущим
+var next = LOCI[idx+1];
+if(next && !state.done[next.id]) setPinState(next.id, 'current');
+checkAllDone();
+}
+function checkAllDone(){
+var all = LOCI.every(function(l){ return state.done[l.id]; });
+if(all) revealFinal();
+}
+/* ---------- Рендер секций локусов ---------- */
+var lociWrap = document.getElementById('lq-loci');
+LOCI.forEach(function(loc, idx){
+var sec = document.createElement('section');
+sec.className = 'lq-locus lq-reveal';
+sec.id = loc.id;
+var html = '';
+html += '<div class="lq-locus-no">'+loc.no+'</div>';
+// Вопрос
+html += '<div class="lq-question">';
+html += '<p class="lq-q-text">'+esc(loc.question)+'</p>';
+html += '<div class="lq-options">';
+loc.options.forEach(function(opt,i){
+html += '<button type="button" class="lq-option" data-i="'+i+'">'+esc(opt)+'</button>';
+});
+html += '</div>';
+html += '<div class="lq-feedback"></div>';
+html += '</div>';
+// Карточка. Изображение выводится тегом <img> (грузится без JS/CORS).
+// Приоритет источника: 1) ручной loc.image (медиатека Tilda),
+// 2) loc.imgFallback (прямая ссылка Wikimedia), а скрипт может заменить
+// src на главное фото статьи Википедии (loc.wiki), если API доступен.
+var initSrc = loc.image || loc.imgFallback || '';
+html += '<div class="lq-card">';
+html += '<div class="lq-card-media" data-wiki="'+esc(loc.wiki||'')+'">';
+if(initSrc){
+html += '<img class="lq-card-img" alt="'+esc(loc.name)+'" src="'+esc(initSrc)+'" '
++ 'onload="this.classList.add(\'ready\')" '
++ 'onerror="this.style.display=\'none\';this.parentNode.classList.add(\'noimg\')">';
+}else{
+html += '<span class="lq-media-ph">изображение локуса</span>';
+}
+html += '</div>';
+html += '<div class="lq-card-name">'+esc(loc.name)+'</div>';
+html += '<div class="lq-card-addr">'+esc(loc.address || 'Санкт-Петербург')+'</div>';
+// Кнопки «взглядов»
+html += '<div class="lq-views">';
+loc.views.forEach(function(v,vi){
+html += '<div class="lq-view" data-c="'+v.c+'" data-vi="'+vi+'">';
+html += '<button type="button" class="lq-view-btn">';
+html += '<span class="lq-vchip"></span>'+esc(v.title);
+html += '<span class="lq-varrow">▾</span></button>';
+html += '<div class="lq-view-body"><div class="lq-view-body-inner">'+esc(v.text)+'</div></div>';
+html += '</div>';
+});
+html += '</div>'; // .lq-views
+html += '</div>'; // .lq-card
+sec.innerHTML = html;
+lociWrap.appendChild(sec);
+wireLocus(sec, loc, idx);
+loadLocusImage(sec, loc);
+});
+/* ---------------------------------------------------------------------
+Загрузка фото локуса из Википедии (REST summary API).
+Берётся главное изображение статьи loc.wiki. Если ручной loc.image
+задан — используется он и запрос не выполняется. При любой ошибке
+остаётся аккуратный плейсхолдер.
+--------------------------------------------------------------------- */
+function loadLocusImage(sec, loc){
+var box = sec.querySelector('.lq-card-media');
+if(!box) return;
+var imgEl = box.querySelector('.lq-card-img');
+if(loc.image) return; // ручной URL — не трогаем
+if(!loc.wiki) return; // нечего подгружать — остаётся fallback/плейсхолдер
+// Пытаемся получить «главное» фото статьи и заменить им исходный <img>.
+// Если API недоступен — на карточке уже показан imgFallback, всё ок.
+var tier = 0;
+function upgrade(src){
+if(!src) return;
+var probe = new Image();
+probe.onload = function(){
+if(imgEl){ imgEl.src = src; imgEl.style.display=''; imgEl.classList.add('ready'); box.classList.remove('noimg'); }
+else {
+var ni=document.createElement('img');
+ni.className='lq-card-img ready'; ni.alt=loc.name; ni.src=src;
+var ph=box.querySelector('.lq-media-ph'); if(ph) ph.remove();
+box.appendChild(ni);
+}
+box.classList.add('loaded');
+var parentCard = box.closest('.lq-card');
+if(parentCard) refreshCardHeight(parentCard);
+};
+probe.src = src;
+}
+function tier1(){
+fetch('https://ru.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(loc.wiki),
+{headers:{'Accept':'application/json'}})
+.then(function(r){return r.ok?r.json():Promise.reject();})
+.then(function(d){
+var s=(d.originalimage&&d.originalimage.source)||(d.thumbnail&&d.thumbnail.source);
+if(s) upgrade(s); else next();
+}).catch(next);
+}
+function tier2(){
+fetch('https://ru.wikipedia.org/w/api.php?action=query&format=json&origin=*'
++'&prop=pageimages&piprop=thumbnail&pithumbsize=800&redirects=1'
++'&titles='+encodeURIComponent(loc.wiki))
+.then(function(r){return r.ok?r.json():Promise.reject();})
+.then(function(d){
+var pages=d&&d.query&&d.query.pages, s=null;
+if(pages) for(var k in pages){ if(pages[k].thumbnail){ s=pages[k].thumbnail.source; break; } }
+if(s) upgrade(s); else next();
+}).catch(next);
+}
+var tiers=[tier1, tier2];
+function next(){ if(tier<tiers.length) tiers[tier++](); }
+next();
+}
+/* ---------- Логика одного локуса ---------- */
+function wireLocus(sec, loc, idx){
+var optBtns = sec.querySelectorAll('.lq-option');
+var feedback = sec.querySelector('.lq-feedback');
+var card = sec.querySelector('.lq-card');
+optBtns.forEach(function(btn){
+btn.addEventListener('click', function(){
+if(state.answered[loc.id]) return;
+state.answered[loc.id] = true;
+var chosen = parseInt(btn.dataset.i,10);
+var correct = loc.answer;
+optBtns.forEach(function(b){
+var i = parseInt(b.dataset.i,10);
+b.disabled = true;
+if(i===correct) b.classList.add('is-correct');
+else if(i===chosen) b.classList.add('is-wrong');
+else b.classList.add('is-dim');
+});
+if(chosen===correct){
+addScore();
+feedback.className = 'lq-feedback ok';
+feedback.textContent = 'Верно! +1 балл.';
+}else{
+feedback.className = 'lq-feedback miss';
+feedback.textContent = loc.miss || 'Не угадали — но карточка всё равно открыта.';
+}
+openCard(card);
+});
+});
+// аккордеон «взглядов»
+var views = sec.querySelectorAll('.lq-view');
+views.forEach(function(view){
+var btn = view.querySelector('.lq-view-btn');
+var body = view.querySelector('.lq-view-body');
+btn.addEventListener('click', function(){
+var isOpen = view.classList.toggle('open');
+body.style.maxHeight = isOpen ? (body.scrollHeight + 72) + 'px' : '0px';
+view.classList.add('read');
+refreshCardHeight(sec.querySelector('.lq-card'));
+setTimeout(function(){ refreshCardHeight(sec.querySelector('.lq-card')); }, 480);
+checkLocusComplete(sec, loc, idx);
+});
+});
+}
+function refreshCardHeight(card){
+if(!card || !card.classList.contains('open')) return;
+card.style.maxHeight = (card.scrollHeight + 160) + 'px';
+}
+function openCard(card){
+card.classList.add('open');
+refreshCardHeight(card);
+requestAnimationFrame(function(){ refreshCardHeight(card); });
+setTimeout(function(){ refreshCardHeight(card); }, 480);
+}
+// Локус пройден, когда открыты все «взгляды» (или см. альтернативу по скроллу ниже)
+function checkLocusComplete(sec, loc, idx){
+var views = sec.querySelectorAll('.lq-view');
+var allRead = Array.prototype.every.call(views, function(v){ return v.classList.contains('read'); });
+if(allRead) markDone(loc, idx);
+}
+/* ---------- Scroll-reveal + «пройдено по скроллу» ---------- */
+var revealEls = root.querySelectorAll('.lq-reveal');
+if('IntersectionObserver' in window && !prefersReduced){
+var io = new IntersectionObserver(function(entries){
+entries.forEach(function(en){
+if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+});
+}, {threshold:0.12});
+revealEls.forEach(function(el){ io.observe(el); });
+}else{
+revealEls.forEach(function(el){ el.classList.add('in'); });
+}
+// Альтернатива из ТЗ: считать локус пройденным, если читатель проскроллил дальше.
+// Включается, когда низ секции локуса ушёл выше середины экрана.
+if('IntersectionObserver' in window){
+var passObserver = new IntersectionObserver(function(entries){
+entries.forEach(function(en){
+if(!en.isIntersecting && en.boundingClientRect.top < 0){
+var id = en.target.id;
+var idx = LOCI.findIndex(function(l){ return l.id===id; });
+if(idx>-1 && state.answered[LOCI[idx].id]) markDone(LOCI[idx], idx);
+}
+});
+}, {rootMargin:'-55% 0px -45% 0px'});
+LOCI.forEach(function(l){
+var node = document.getElementById(l.id);
+if(node) passObserver.observe(node);
+});
+// Финал показывается, как только секция итога попадает в зону видимости —
+// вне зависимости от того, открыл ли читатель все «взгляды».
+var finalNode = document.getElementById('lq-final');
+if(finalNode){
+var finalObserver = new IntersectionObserver(function(entries){
+entries.forEach(function(en){
+if(en.isIntersecting){
+// дозакрыть отвеченные, но не отмеченные локусы
+LOCI.forEach(function(l, i){
+if(state.answered[l.id] && !state.done[l.id]) markDone(l, i);
+});
+revealFinal();
+finalObserver.disconnect();
+}
+});
+}, {threshold:0.35});
+finalObserver.observe(finalNode);
+}
+}else{
+// Нет IntersectionObserver — показываем итог сразу при заходе на финал через прокрутку
+window.addEventListener('scroll', function(){
+var finalNode = document.getElementById('lq-final');
+if(finalNode && finalNode.getBoundingClientRect().top < window.innerHeight*0.8){
+revealFinal();
+}
+}, {passive:true});
+}
+/* ---------- Финал ---------- */
+function revealFinal(){
+if(state.finalShown) return; // не запускать дважды
+state.finalShown = true;
+var numEl = document.getElementById('lq-final-num');
+if(!numEl) return;
+var target = state.score;
+// прокрутить финал в зону видимости (по желанию пользователя — мягко)
+var finalSec = document.getElementById('lq-final');
+if(finalSec) finalSec.classList.add('in');
+if(prefersReduced || target <= 0){ numEl.textContent = target; return; }
+var cur = 0;
+var step = Math.max(1, Math.round(target/24));
+var timer = setInterval(function(){
+cur += step;
+if(cur >= target){ cur = target; clearInterval(timer); }
+numEl.textContent = cur;
+}, 40);
+}
+/* ---------- Рестарт ---------- */
+document.getElementById('lq-restart').addEventListener('click', function(){
+// 1) Сбрасываем состояние
+state.score = 0;
+state.answered = {};
+state.done = {};
+state.finalShown = false;
+document.getElementById('lq-score').textContent = '0';
+document.getElementById('lq-final-num').textContent = '0';
+// 2) Сбрасываем все секции локусов: вопросы, карточки, «взгляды»
+LOCI.forEach(function(loc, i){
+var sec = document.getElementById(loc.id);
+if(!sec) return;
+// варианты ответа
+sec.querySelectorAll('.lq-option').forEach(function(b){
+b.disabled = false;
+b.classList.remove('is-correct','is-wrong','is-dim');
+});
+var fb = sec.querySelector('.lq-feedback');
+if(fb){ fb.className = 'lq-feedback'; fb.textContent = ''; }
+// карточка
+var card = sec.querySelector('.lq-card');
+if(card){ card.classList.remove('open'); card.style.maxHeight = ''; }
+// «взгляды»
+sec.querySelectorAll('.lq-view').forEach(function(v){
+v.classList.remove('open','read');
+var body = v.querySelector('.lq-view-body');
+if(body) body.style.maxHeight = '0px';
+});
+// точки на карте
+setPinState(loc.id, i === 0 ? 'current' : 'idle');
+});
+// 3) Прокручиваем к началу квеста
+var top = document.getElementById('lq-quest');
+if(top && top.scrollIntoView){
+top.scrollIntoView({behavior: prefersReduced ? 'auto' : 'smooth', block:'start'});
+}else{
+window.scrollTo(0, 0);
+}
+});
+/* ---------- утилита ---------- */
+function esc(s){
+return String(s==null?'':s)
+.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+/* ---------- старт ---------- */
+buildMap();
+/* ---------- Карта всегда в поле зрения при прокрутке (desktop) ---------- */
+(function pinMapCard(){
+var mapCol = root.querySelector('.lq-mapcol');
+var mapCard = root.querySelector('.lq-mapcard');
+if(!mapCol || !mapCard) return;
+var STICK = 24;
+var ph = document.createElement('div');
+ph.className = 'lq-mapcard-ph';
+ph.setAttribute('aria-hidden', 'true');
+mapCol.insertBefore(ph, mapCard);
+var mq = window.matchMedia('(max-width:860px)');
+function clearPin(){
+mapCard.classList.remove('is-pinned', 'is-pinned-bottom');
+mapCard.style.top = mapCard.style.left = mapCard.style.width = mapCard.style.bottom = '';
+ph.style.display = 'none';
+ph.style.height = '0';
+}
+function update(){
+if(mq.matches){ clearPin(); return; }
+var col = mapCol.getBoundingClientRect();
+var h = mapCard.offsetHeight;
+if(col.top > STICK){
+clearPin();
+return;
+}
+ph.style.display = 'block';
+ph.style.height = h + 'px';
+if(col.bottom <= h + STICK){
+mapCard.classList.add('is-pinned-bottom');
+mapCard.classList.remove('is-pinned');
+mapCard.style.top = mapCard.style.left = mapCard.style.width = mapCard.style.bottom = '';
+return;
+}
+mapCard.classList.add('is-pinned');
+mapCard.classList.remove('is-pinned-bottom');
+mapCard.style.top = STICK + 'px';
+mapCard.style.left = col.left + 'px';
+mapCard.style.width = col.width + 'px';
+mapCard.style.bottom = 'auto';
+}
+var busy = false;
+function onMove(){
+if(busy) return;
+busy = true;
+requestAnimationFrame(function(){ busy = false; update(); });
+}
+window.addEventListener('scroll', onMove, {passive:true});
+window.addEventListener('resize', onMove, {passive:true});
+if(window.ResizeObserver){
+try{ new ResizeObserver(onMove).observe(mapCol); }catch(e){}
+}
+update();
+})();
+})();
+</script>
+</body>
+</html>
