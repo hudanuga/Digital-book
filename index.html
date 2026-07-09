@@ -51,17 +51,17 @@
 <div class="gkt-cult-cards">
 <article class="gkt-cult gkt-cult--fr reveal">
 <span class="gkt-flag">🇫🇷</span>
-<h3>Французская линия</h3>
+<h3>Французский след</h3>
 <p>Дипломаты, писатели и&nbsp;аристократия. Язык салонов и&nbsp;Смольного института, эмигранты после&nbsp;1789&nbsp;года, литературные адреса Бальзака и&nbsp;Пушкина.</p>
 </article>
 <article class="gkt-cult gkt-cult--de reveal">
 <span class="gkt-flag">🇩🇪</span>
-<h3>Немецкая линия</h3>
+<h3>Немецкий след</h3>
 <p>Купцы, аптекари, педагоги и&nbsp;инженеры. Лютеранские кирхи, школы, заводы Siemens и&nbsp;легенды вроде Башни грифонов — немецкий «орднунг» на&nbsp;берегах Невы.</p>
 </article>
 <article class="gkt-cult gkt-cult--it reveal">
 <span class="gkt-flag">🇮🇹</span>
-<h3>Итальянская линия</h3>
+<h3>Итальянский след</h3>
 <p>Архитекторы, музыканты и&nbsp;артисты. Они строили крепости и&nbsp;дворцы, привезли оперу и&nbsp;барокко — от&nbsp;Петропавловской крепости до&nbsp;каскадов Петергофа.</p>
 </article>
 </div>
@@ -292,7 +292,7 @@
 <style>
 /* =================== ПАЛИТРА И БАЗА =================== */
 #gkt{
---hero:url("https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/RUS-2016-Aerial-SPB-Peter_and_Paul_Fortress_02.jpg/1600px-RUS-2016-Aerial-SPB-Peter_and_Paul_Fortress_02.jpg"); /* ФОН ОБЛОЖКИ: замените URL на свой (фото, загруженное в Tilda) */
+--hero:url("hero.jpg"); /* ФОН ОБЛОЖКИ: файл hero.jpg лежит в репозитории рядом с index.html */
 --bg:#F6F5F2; /* туманно-белый */
 --card:#D8D6D1; /* светло-серый гранит */
 --blue:#587A9A; /* невская синева */
@@ -789,11 +789,13 @@ return '<span class="gkt-badge '+c[0]+'">'+f+" "+CULTNAME[c[0]]+"</span>";
 }
 function imgFor(o){return IMG[o.id]||fallback(o.name,o.c);}
 /* ===================== РЕНДЕР: список зон в блоке 1 ===================== */
+/* склонение слова «локус» по числу: 1 локус, 2–4 локуса, 5+ локусов */
+function plocus(n){var d=n%10,h=n%100;if(d===1&&h!==11)return"локус";if(d>=2&&d<=4&&(h<10||h>=20))return"локуса";return"локусов";}
 (function(){
 var box=$("#gkt-zonelist");
 for(var z=1;z<=5;z++){
 var cnt=L.filter(function(x){return x.z===z}).length;
-var c=el("div","gkt-zonecip","<b>"+z+"</b><span>"+ZONES[z].t+"<br>"+cnt+" лок.</span>");
+var c=el("div","gkt-zonecip","<b>"+z+"</b><span>"+ZONES[z].t+"<br>"+cnt+" "+plocus(cnt)+"</span>");
 (function(zz){c.addEventListener("click",function(){scrollToEl($("#gkt-zone-"+zz));});})(z);
 box.appendChild(c);
 }
