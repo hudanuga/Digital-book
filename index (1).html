@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Город как текст — Санкт-Петербург в языках и культурах мира</title>
+<meta name="description" content="Цифровая книга-экскурсия: маршрут из 31 локуса по французскому, немецкому и итальянскому Петербургу с интерактивной картой-квестом.">
+</head>
+<body>
+<!-- ============================================================= -->
+<!-- ГОРОД КАК ТЕКСТ · Санкт-Петербург в языках и культурах мира -->
+<!-- Лонгрид для Tilda Zero Block (один self-contained блок). -->
+<!-- Вставлять: Zero Block → элемент "HTML" (T123) → весь код. -->
+<!-- Всё (HTML/CSS/JS) заскоуплено под #gkt, чтобы не ломать тему.-->
+<!-- ============================================================= -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap&subset=cyrillic,cyrillic-ext,latin" rel="stylesheet">
+<div id="gkt">
+<!-- Тонкий sticky-прогресс квеста (появляется после обложки) -->
+<div class="gkt-progress" id="gkt-progress" aria-hidden="true">
+<div class="gkt-progress__row">
+<span class="gkt-progress__label">Открыто локусов</span>
+<span class="gkt-progress__count"><b id="gkt-pc">0</b> / <span id="gkt-pt">31</span></span>
+</div>
+<div class="gkt-progress__track"><div class="gkt-progress__fill" id="gkt-pf"></div></div>
+</div>
+<!-- ===================== БЛОК 0 — ОБЛОЖКА ===================== -->
+<header class="gkt-hero" id="gkt-top">
+<div class="gkt-hero__bg" id="gkt-hero-bg"></div>
+<div class="gkt-hero__veil"></div>
+<div class="gkt-hero__inner">
+<p class="gkt-hero__kicker gkt-rise">Цифровая книга · город-экскурсия</p>
+<h1 class="gkt-hero__title gkt-rise">Город как&nbsp;текст</h1>
+<p class="gkt-hero__sub gkt-rise">Санкт-Петербург в&nbsp;языках и&nbsp;культурах мира</p>
+<p class="gkt-hero__quote gkt-rise">Каждый из&nbsp;этих объектов несёт в&nbsp;себе слои смыслов. Вы&nbsp;читаете город, даже если не&nbsp;осознаёте этого.</p>
+<button class="gkt-btn gkt-rise" id="gkt-start">Начать прогулку</button>
+<div class="gkt-hero__links">
+<a class="gkt-hero__btn2 gkt-hero__quest gkt-rise" href="quest.html">Хочу проверить себя →</a>
+<a class="gkt-hero__btn2 gkt-hero__appendix gkt-rise" href="science.html">Теоретический каркас →</a>
+</div>
+</div>
+<div class="gkt-hero__scroll" aria-hidden="true"><span></span></div>
+</header>
+<!-- ============ БЛОК 1 — «КАК ЧИТАТЬ ГОРОД» ============ -->
+<section class="gkt-sec gkt-intro" id="gkt-intro">
+<div class="gkt-wrap">
+<p class="gkt-eyebrow reveal">Как читать город</p>
+<h2 class="gkt-h2 reveal">Петербург — это текст, написанный на&nbsp;трёх языках сразу</h2>
+<p class="gkt-lead reveal">Этот маршрут — попытка прочитать Санкт-Петербург как многослойную книгу. Каждый фасад здесь — цитата, каждое название улицы — историческая страница. Мы&nbsp;пройдём по&nbsp;городу глазами трёх европейских культур, которые веками формировали его облик, речь и&nbsp;характер.</p>
+<div class="gkt-cult-cards">
+<article class="gkt-cult gkt-cult--fr reveal">
+<span class="gkt-flag">🇫🇷</span>
+<h3>Французский след</h3>
+<p>Дипломаты, писатели и&nbsp;аристократия. Язык салонов и&nbsp;Смольного института, эмигранты после&nbsp;1789&nbsp;года, литературные адреса Бальзака и&nbsp;Пушкина.</p>
+</article>
+<article class="gkt-cult gkt-cult--de reveal">
+<span class="gkt-flag">🇩🇪</span>
+<h3>Немецкий след</h3>
+<p>Купцы, аптекари, педагоги и&nbsp;инженеры. Лютеранские кирхи, школы, заводы Siemens и&nbsp;легенды вроде Башни грифонов — немецкий «орднунг» на&nbsp;берегах Невы.</p>
+</article>
+<article class="gkt-cult gkt-cult--it reveal">
+<span class="gkt-flag">🇮🇹</span>
+<h3>Итальянский след</h3>
+<p>Архитекторы, музыканты и&nbsp;артисты. Они строили крепости и&nbsp;дворцы, привезли оперу и&nbsp;барокко — от&nbsp;Петропавловской крепости до&nbsp;каскадов Петергофа.</p>
+</article>
+</div>
+<div class="gkt-howto reveal">
+<h3 class="gkt-howto__title">Как устроен маршрут</h3>
+<ul class="gkt-howto__list">
+<li><b>29 локусов</b> — реальные точки на&nbsp;карте Петербурга, сгруппированные в&nbsp;<b>5&nbsp;зон</b>.</li>
+<li><b>Интерактивная карта</b> — кликните по&nbsp;точке, чтобы открыть локус. Цвет точки = культура.</li>
+<li><b>Квест</b> — счётчик вверху показывает, сколько локусов вы&nbsp;уже открыли.</li>
+<li><b>Паспорт города</b> — в&nbsp;конце маршрута соберётся ваш личный итог прогулки.</li>
+</ul>
+<div class="gkt-zonelist" id="gkt-zonelist"><!-- JS --></div>
+</div>
+</div>
+</section>
+<!-- ============ БЛОК 2 — ИНТЕРАКТИВНАЯ КАРТА ============ -->
+<section class="gkt-sec gkt-mapsec" id="gkt-map">
+<div class="gkt-wrap">
+<p class="gkt-eyebrow reveal">Ядро маршрута</p>
+<h2 class="gkt-h2 reveal">Интерактивная карта-квест</h2>
+<p class="gkt-lead reveal">Все 31&nbsp;локус на&nbsp;одной карте Петербурга. Точки расставлены географически — по&nbsp;реальным координатам. Наведите на&nbsp;зону, чтобы подсветить её&nbsp;точки, и&nbsp;кликните по&nbsp;любой из&nbsp;них.</p>
+<div class="gkt-legend reveal" id="gkt-legend"><!-- JS --></div>
+<div class="gkt-map reveal">
+<svg viewBox="0 0 1000 500" class="gkt-map__svg" id="gkt-svg" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Карта Санкт-Петербурга с локусами">
+<!-- вода (фон) -->
+<rect x="0" y="0" width="1000" height="500" fill="var(--water)"/>
+<!-- суша: Петроградская сторона (север) -->
+<path class="gkt-land" d="M0,0 L1000,0 L1000,92 L850,98 L700,105 L560,128 L470,150 L330,175 L180,210 L0,250 Z"/>
+<!-- суша: центр / южный берег -->
+<path class="gkt-land" d="M1000,140 L940,152 L870,168 L800,182 L700,196 L640,204 L560,211 L505,215 L470,235 L430,285 L400,328 L340,372 L240,418 L130,458 L0,490 L0,500 L1000,500 Z"/>
+<!-- суша: Васильевский остров -->
+<path class="gkt-land gkt-vo" d="M490,193 L430,210 L340,225 L240,258 L120,330 L55,378 L40,400 L110,420 L220,392 L310,350 L380,308 L440,258 Z"/>
+<!-- каналы (декор) -->
+<path class="gkt-canal" d="M665,205 C678,235 690,255 700,300 C712,350 725,390 735,430"/>
+<path class="gkt-canal" d="M505,216 C530,245 540,275 520,300 C500,328 488,330 470,365"/>
+<path class="gkt-canal" d="M560,250 C580,275 592,290 595,304 C600,340 600,375 588,415"/>
+<!-- Петропавловская крепость (островок-звезда) -->
+<path class="gkt-fort" d="M530,134 L545,142 L552,156 L540,164 L524,162 L515,150 L520,138 Z"/>
+<!-- группа маркеров (JS) -->
+<g id="gkt-markers"></g>
+<!-- инсет Петергофа (за пределами карты) -->
+<g id="gkt-peterhof"></g>
+</svg>
+<span class="gkt-compass" aria-hidden="true">С</span>
+<div class="gkt-maptip" id="gkt-maptip" aria-hidden="true"></div>
+</div>
+<p class="gkt-map__hint reveal">Совет: листайте вниз — каждый локус откроется сам, когда вы&nbsp;дойдёте до&nbsp;его карточки.</p>
+</div>
+</section>
+<!-- ============ БЛОК ВИДЕО (3 плеера, после карты) ============ -->
+<section class="gkt-sec gkt-videos" id="gkt-video">
+<div class="gkt-wrap">
+<p class="gkt-eyebrow reveal">Смотреть</p>
+<h2 class="gkt-h2 reveal">Вперёд на экскурсию!</h2>
+<p class="gkt-lead reveal">Три коротких фильма-сопровождения.</p>
+<div class="gkt-videogrid" id="gkt-videogrid"><!-- JS --></div>
+</div>
+</section>
+<!-- ============ БЛОК 3 — МАРШРУТ ПО ЗОНАМ ============ -->
+<section class="gkt-sec gkt-route" id="gkt-route"><!-- JS строит зоны и карточки --></section>
+<!-- ============ БЛОК 4 — ПАСПОРТ ГОРОДА ============ -->
+<section class="gkt-sec gkt-passport" id="gkt-passport">
+<div class="gkt-wrap">
+<p class="gkt-eyebrow reveal">Итог квеста</p>
+<h2 class="gkt-h2 reveal">Паспорт города</h2>
+<p class="gkt-lead reveal">Город, который говорит сразу на&nbsp;нескольких языках. За&nbsp;время маршрута мы&nbsp;увидели Петербург глазами французских дипломатов и&nbsp;архитекторов, немецких купцов, педагогов и&nbsp;инженеров, итальянских мастеров и&nbsp;художников.</p>
+<div class="gkt-pass reveal">
+<div class="gkt-pass__big">
+<span class="gkt-pass__num" id="gkt-pass-num">0</span>
+<span class="gkt-pass__of">из&nbsp;<span id="gkt-pass-total">31</span> локусов города открыто</span>
+<div class="gkt-pass__bar"><div class="gkt-pass__barfill" id="gkt-pass-bar"></div></div>
+</div>
+<div class="gkt-pass__cults">
+<div class="gkt-passc gkt-passc--fr"><span class="gkt-passc__flag">🇫🇷</span><b id="gkt-pass-fr">0</b><i>французских</i></div>
+<div class="gkt-passc gkt-passc--de"><span class="gkt-passc__flag">🇩🇪</span><b id="gkt-pass-de">0</b><i>немецких</i></div>
+<div class="gkt-passc gkt-passc--it"><span class="gkt-passc__flag">🇮🇹</span><b id="gkt-pass-it">0</b><i>итальянских</i></div>
+</div>
+</div>
+<p class="gkt-pass__text reveal">Петербург невозможно прочитать за&nbsp;один день и&nbsp;невозможно объяснить через одну культуру. Это «умышленный город», где каждый фасад&nbsp;— цитата, а&nbsp;каждое название улицы&nbsp;— историческая страница. И&nbsp;чем внимательнее мы&nbsp;всматриваемся в&nbsp;него, тем больше историй он&nbsp;готов рассказать.</p>
+<div class="gkt-pass__actions reveal">
+<button class="gkt-btn" id="gkt-share">Поделиться паспортом</button>
+<button class="gkt-btn gkt-btn--ghost" id="gkt-reset">Пройти заново</button>
+</div>
+</div>
+</section>
+<!-- ============ БЛОК 5 — БИБЛИОГРАФИЯ И ТИТРЫ ============ -->
+<footer class="gkt-sec gkt-credits" id="gkt-credits">
+<div class="gkt-wrap">
+<div class="gkt-team reveal">
+<div class="gkt-team__col">
+<h4>Авторский коллектив</h4>
+<p><b>Редакторы:</b> Кожевникова Марфа, Колимбет Глеб</p>
+<p><b>Лингвокультурологи:</b> Артемьева Анна, Вершицкая Наталья, Габдулхакова Камила, Гоголева Варвара, Заикина Александра, Климашова Полина, Куксова Елизавета, Носкова Варвара, Понятовская Ева, Соломахина Ярослава, Чаккери Валерий</p>
+<p><b>Разработчики квеста:</b> Мочалова Анна, Харузина Рената</p>
+</div>
+<div class="gkt-team__col">
+<h4>Руководители проекта:</h4>
+<p>Зелинская Юлия Юрьевна, Урсул Наталья Валерьевна</p>
+<p class="gkt-muted">Проект «Цифровая книга. Город как текст: Санкт-Петербург в&nbsp;языках и&nbsp;культурах мира».</p>
+</div>
+</div>
+<!-- ВСТАВЬТЕ адрес опубликованной 2-й страницы в href ниже -->
+<a class="gkt-appendix reveal" href="science.html">
+<span class="gkt-appendix__body">
+<b>Научное приложение</b>
+<i>Полная теоретическая база, методология и библиография проекта</i>
+</span>
+<span class="gkt-appendix__arrow" aria-hidden="true">→</span>
+</a>
+<details class="gkt-biblio reveal">
+<summary>Библиография</summary>
+<div class="gkt-biblio__body">
+<p class="gkt-muted">Сводный список литературы из&nbsp;всех глав проекта (теоретической, французской, немецкой, итальянской), оформленный по&nbsp;ГОСТ. Всего источников&nbsp;— 87.</p>
+<ol>
+<li>Анциферов Н. П. Душа Петербурга. — Пг.: Брокгауз — Ефрон, 1922.</li>
+<li>Аптека Пеля [Электронный ресурс] // Rutube. — 11.12.2023. — URL: https://rutube.ru/video/287b02ca11ba4e943a83a54ede23fd49/ (дата обращения: 14.06.2026).</li>
+<li>Аптека-музей в Санкт-Петербурге [Электронный ресурс] // Фармацевтический вестник. — 01.11.2011. — URL: https://pharmvestnik.ru/articles/apteka-muzej-v-sankt-peterburge.html (дата обращения: 14.06.2026).</li>
+<li>Бабаева А. В. Притяжение Запада: итальянский вектор // Современные проблемы гуманитарных и общественных наук: сборник статей. — Серия «Духовная жизнь общества и человека: история и современность». — Вып. 3 (25). — Воронеж: Издательско-полиграфический центр «Научная книга», 2019. — С. 5–10.</li>
+<li>Базилика Святой Екатерины Александрийской : официальный сайт католического прихода. — URL: https://spb-catholic.ru (дата обращения: 02.06.2025).</li>
+<li>Базилика Святой Екатерины Александрийской : официальный сайт. — URL: https://bazilika-catherine.ru/ (дата обращения: 24.05.2026).</li>
+<li>Барт Р. Семиология и урбанизм // Избранные работы: Семиотика. Поэтика. — М.: Прогресс, 1989.</li>
+<li>Благово Н. В. Карл Иванович Май и его Петербургская школа. — СПб.: Серебряный век, 2020. — 192 с.</li>
+<li>Болдырев Н. Н. Когнитивная семантика. — Тамбов: ТГУ, 2001.</li>
+<li>Боголюбова Н. М. Итальянский оперный театр в Санкт-Петербурге // Вестник Академии русского балета им. А. Я. Вагановой. — 2016. — № 4 (45). — С. 42–48.</li>
+<li>Буренина М. С. Прогулки по Невскому проспекту. — СПб.: Литера, 2003. — 272 с.</li>
+<li>Бальзак в Санкт-Петербурге // Прогулки по Санкт-Петербургу : [сайт]. — URL: https://walkspb.ru (дата обращения: 02.06.2025).</li>
+<li>Бальзак в Санкт-Петербурге. Достоевский и «Евгения Гранде» // Межрайонная централизованная библиотечная система им. М. Ю. Лермонтова : [сайт]. — URL: https://lermontovka-spb.ru (дата обращения: 02.06.2025).</li>
+<li>Библиотека Вольтера: история собрания // Российская национальная библиотека : официальный сайт. — URL: https://nlr.ru/voltaire/RA382/istoriya-sobraniya (дата обращения: 02.06.2025).</li>
+<li>Валиев М. Т. О музее истории школы Карла Мая // История Петербурга. — 2009. — № 4. — С. 67–71.</li>
+<li>Ванденберг Ф. Золото Шлимана. — Смоленск: Русич, 1996. — 592 с.</li>
+<li>Влияние итальянской архитектуры на градостроительство России [Электронный ресурс] // CyberLeninka. — URL: https://cyberleninka.ru/article/n/vliyanie-italyanskoy-arhitektury-na-gradostroitelstvo-rossii1 (дата обращения: 24.05.2026).</li>
+<li>Воркачев С. Г. Лингвокультурология, языковая личность, концепт // Филологические науки. — 2001. — № 1.</li>
+<li>де Серто М. Изобретение повседневности. — СПб.: Изд-во Европейского университета, 2013.</li>
+<li>Георги И. Г. Описание российско-императорского столичного города Санкт-Петербурга и достопримечательностей в окрестностях оного. — СПб.: Лига, 1996.</li>
+<li>Гете-институт [Электронный ресурс]. — URL: https://www.goethe.de/ins/ru/ru/sta/pet.html (дата обращения: 19.05.2026).</li>
+<li>Горелик Р. С. Немцы в Санкт-Петербурге: вклад в российскую науку и культуру.</li>
+<li>Гроссман Л. П. Бальзак в России // Литературное наследство. — М., 1937. — Т. 31–32.</li>
+<li>Довгарь О. В. Лютеранские церкви Санкт-Петербурга... // Вестник СПбГИК. — 2022. — № 1 (50).</li>
+<li>Дударев В. С. Петербургская миссия Отто фон Бисмарка. — СПб.: Алетейя, 2013. — 304 с.</li>
+<li>Елизарьева М. Как василеостровский немец Генрих Шлиман вошел в историю // Василеостровские новости. — 2020. — № 14 (237). — С. 5.</li>
+<li>Елибаева Р. Д. Урботекст лингвистического ландшафта г. Шымкента // Неофилология. — 2025. — Т. 11, № 1.</li>
+<li>История Капеллы [Электронный ресурс] // Официальный сайт Государственной академической капеллы Санкт-Петербурга. — URL: https://capella-spb.ru/ru/o-kapelle/istoriya-kapelly (дата обращения: 24.05.2026).</li>
+<li>История фабрики C. M. Schröder [Электронный ресурс]. — URL: https://tunerus.ru/stati/istoriya_fabriki_schroder/ (дата обращения: 19.05.2026).</li>
+<li>Кабакчи В. В. Введение в интерлингвокультурологию. — СПб.: РГПУ им. А. И. Герцена, 2001.</li>
+<li>Кабакчи В. В., Белоглазова Е. В. Введение в интерлингвокультурологию : учебник для вузов. — 2-е изд., испр. и доп. — М.: Издательство Юрайт, 2026. — С. 12–18. — (Высшее образование). — ISBN 978-5-534-07861-9.</li>
+<li>Карасик В. И. Языковая кристаллизация смысла. — М.: Гнозис, 2010.</li>
+<li>Карасик В. И. Языковой круг: личность, концепты, дискурс. — Волгоград: Перемена, 2002.</li>
+<li>Красных В. В. Этнопсихолингвистика и лингвокультурология. — М.: Гнозис, 2002.</li>
+<li>Козырева М. А. Коды культуры и их участие в создании языковой картины мира (на примере гастрономического кода в русской и французской лингвокультурах) // Известия Саратовского университета. Новая серия. Серия: Филология. Журналистика. — 2016. — Т. 16, вып. 4.</li>
+<li>Краткий словарь когнитивных терминов / Е. С. Кубрякова, В. З. Демьянков, Ю. Г. Панкрац, Л. Г. Лузина; под общ. ред. Е. С. Кубряковой. — М., 1996.</li>
+<li>Кубрякова Е. С. Начальные этапы становления когнитивизма: лингвистика, психология, когнитивная наука // Вопросы языкознания. — 1994. — № 4.</li>
+<li>Кубрякова Е. С. Язык и знание. — М.: Языки славянской культуры, 2004.</li>
+<li>Культурные связи Санкт-Петербурга и Италии: особенности современного периода [Электронный ресурс] // CyberLeninka. — URL: https://cyberleninka.ru/article/n/kulturnye-svyazi-sankt-peterburga-i-italii-osobennosti-sovremennogo-perioda (дата обращения: 24.05.2026).</li>
+<li>Лесгафт П. Ф. [Электронный ресурс]. — URL: http://elib.old.gnpbu.ru/sections/0100/lesgaft/ ; https://history.ru/read/biographies/petr-francevich-lesgaft/ (дата обращения: 14.06.2026).</li>
+<li>Лепетюхина М. Петербург — самый итальянский город к северу от Альп : [интервью с ген. консулом Италии в Санкт-Петербурге Ф. Сальвадори] / М. Лепетюхина. — Текст : электронный // Dipinfo.ru : [сайт]. — 2010. — 5 мая. — URL: https://dipinfo.ru/mezhdunarodnye-otnosheniya/stati-intervyu/peterburg-samyj-italyanskij-gorod-k-severu-ot-alp (дата обращения: 24.05.2026).</li>
+<li>Лихачев Д. С. Школа на Васильевском. — М.: Просвещение, 1990. — 159 с.</li>
+<li>Логинова М. Современное религиозное искусство... // Государство, религия, церковь. — 2024. — Т. 42, № 1. — С. 66–94.</li>
+<li>Линч К. Образ города. — М.: Стройиздат, 1982.</li>
+<li>Лотман Ю. М. Беседы о русской культуре: быт и традиции русского дворянства (XVIII — начало XIX века). — СПб.: Искусство-СПБ, 1994.</li>
+<li>Лотман Ю. М. Внутри мыслящих миров. — СПб.: Азбука, Азбука-Аттикус, 2024.</li>
+<li>Лотман Ю. М. Семиосфера: Культура и взрыв. Внутри мыслящих миров / Ю. М. Лотман. — Санкт-Петербург: Искусство-СПБ, 2000. — 704 с.</li>
+<li>Лотман Ю. М. Символика Петербурга и проблемы семиотики города // История и типология русской культуры. — СПб.: Искусство-СПБ, 2002.</li>
+<li>Лотман Ю. М. Петербургский текст русской литературы. — СПб.: Искусство-СПБ, 2002.</li>
+<li>Маликова Е. Легенды Питера [Электронный ресурс] // Аргументы и факты. — 18.10.2011. — URL: https://spb.aif.ru/society/134783 (дата обращения: 14.06.2026).</li>
+<li>Манежная площадь [Электронный ресурс] // Официальный сайт энциклопедии Санкт-Петербурга. — URL: https://encspb.ru/object/2804005107 (дата обращения: 24.05.2026).</li>
+<li>Маслова В. А. Лингвокультурология. — М.: Академия, 2001.</li>
+<li>Маслова В. А., Пименова М. В. Коды лингвокультуры. — М.: Флинта, 2018.</li>
+<li>Мясников А. Л. Тайный код Петербурга. — М.: Вече, 2016.</li>
+<li>Немцы в Санкт-Петербурге: биографический аспект. — СПб., 2016. — 364 с.</li>
+<li>Никитенко Г. Ю., Соболь В. Д. Дома и люди Васильевского острова. — М.: Центрполиграф, 2024. — 735 с.</li>
+<li>Николаева Л. А. Государственная академическая капелла Санкт-Петербурга: от истоков до современности // Культура-искусство-образование. — 2018. — С. 217–221.</li>
+<li>Никонов В. А. Этнография и ономастика // Советская этнография. — 1971. — № 5.</li>
+<li>Описание С.-Петербурга и Кроншлота в 1720–1721 гг. / публ. Ю. Н. Беспятых. — СПб.: Блиц, 1991.</li>
+<li>Оперный театр в России последней трети XIX века: новое время — новые задачи — новые руководители [Электронный ресурс]. — URL: https://observatoria.rsl.ru/jour/article/viewFile/17/155 (дата обращения: 24.05.2026).</li>
+<li>Отюгова Т. А., Галембо А. С., Гурков И. М. Фортепианная фабрика К. М. Шредер // Музыкальные инструменты. — Л.: Музыка, 1986. — С. 26–32.</li>
+<li>Памятники архитектуры Ленинграда / А. Н. Петров, Е. А. Борисова, А. П. Науменко, А. В. Повелихина. — 4-е изд., перераб. — Л.: Стройиздат, Ленингр. отд-ние, 1975. — 576 с.</li>
+<li>Петрикирхе [Электронный ресурс]. — URL: https://petrikirche-spb.ru/ (дата обращения: 19.05.2026).</li>
+<li>Пименова М. В. Лингвокультурная концептология. — СПб.: СПБГЭУ, 2025.</li>
+<li>Платонов П. В. Здание Германского посольства // Памятники истории и культуры Санкт-Петербурга. — СПб., 2002. — Вып. 6. — С. 228–237.</li>
+<li>Прокудина Е. О. Иностранцы в Санкт-Петербурге...</li>
+<li>Санкт-Петербург: памятники истории и культуры / сост. И. М. Титов. — СПб., 2003. — С. 8–9.</li>
+<li>Санкт-Петербургские галереи: итальянские мотивы на берегах Невы [Электронный ресурс] // CyberLeninka. — URL: https://cyberleninka.ru/article/n/sankt-peterburgskie-galerei-italyanskie-motivy-na-beregah-nevy (дата обращения: 24.05.2026).</li>
+<li>Севкабель Порт [Электронный ресурс]. — URL: https://ru.wikipedia.org/wiki/Севкабель_Порт (дата обращения: 14.06.2026).</li>
+<li>Сергеев М. В. Фортепианный мастер И. Ф. Шредер // Музыковедение. — 2016. — № 9. — С. 43–49.</li>
+<li>Смирнов В. В. St. Petrischule. — СПб.: Коло, 2006. — 152 с.</li>
+<li>Современная школа [Электронный ресурс] // Петришуле. — URL: https://petrischule.spb.ru/main/history/5/ (дата обращения: 18.05.2026).</li>
+<li>Старостин Б. А. Культурно-историческая миссия немецкой диаспоры... — СПб., 2005.</li>
+<li>Суперанская А. В. Что такое топонимика? — М.: Наука, 1985.</li>
+<li>Тома де Томон Ж.-Ф. Проект здания Биржи... [Электронный ресурс]. — URL: https://collection.artsacademymuseum.org/entity/OBJECT/91640 (дата обращения: 14.06.2026).</li>
+<li>Топоров В. Н. Петербургский текст русской литературы. — СПб.: Искусство-СПБ, 2003.</li>
+<li>Филипенко В. «Пространство энергии»... [Электронный ресурс] // 78.ru. — 11.11.2024. — URL: https://78.ru/articles/2024-11-11/prostranstvo-energii-proshloe-i-nastoyashee-kulturnogo-centra-sevkabel-port (дата обращения: 14.06.2026).</li>
+<li>Фирсанова О. В. Евангелическо-лютеранские церкви... // Управленческое консультирование. — 2014. — № 6 (66). — С. 177–182.</li>
+<li>Французский институт в Санкт-Петербурге : официальный сайт. — URL: https://www.institutfrancais-russie.ru/saint-petersbourg (дата обращения: 02.06.2025).</li>
+<li>Французский университетский колледж в Санкт-Петербурге : официальный сайт. — URL: https://spb.fuc.ru (дата обращения: 02.06.2025).</li>
+<li>Чиннов А. А., Сычев Е. А. Реставрация Петергофа // Международная научно-техническая конференция молодых ученых БГТУ им. В. Г. Шухова. — 2018. — С. 6296–6302.</li>
+<li>Чудинов А. В. Французы в России в эпоху Наполеоновских войн: в поисках утраченного времени // Вопросы истории. — 2004. — № 12.</li>
+<li>Шайдуров В. Н., Осипов Н. А. Немцы Санкт-Петербурга... // Вестник РУДН. — 2024. — Т. 23, № 3. — С. 286–298.</li>
+<li>Шульц С. С. Храмы Санкт-Петербурга: история и современность. — СПб.: Глагол, 1994.</li>
+<li>Яковкина Н. И. История русской культуры: XIX век. — СПб.: Лань, 2000.</li>
+<li>Эко У. Отсутствующая структура. Введение в семиологию. — СПб.: Симпозиум, 2004.</li>
+<li>Семимостье // Центральная городская публичная библиотека им. М. Ю. Лермонтова. — URL: https://lermontovka-spb.ru/publications/semimoste/ (дата обращения: 24.05.2026).</li>
+</ol>
+</div>
+</details>
+<p class="gkt-sign">© 2026 · Национальный исследовательский университет «Высшая школа экономики» · ОП  «Тексты, языки и цифровые инструменты» · Город как текст. Изображения локусов — Wikimedia Commons.</p>
+</div>
+</footer>
+<!-- ============ МОДАЛКА-ПРЕВЬЮ ЛОКУСА (с карты) ============ -->
+<div class="gkt-modal" id="gkt-modal" aria-hidden="true">
+<div class="gkt-modal__overlay" data-close></div>
+<div class="gkt-modal__card" role="dialog" aria-modal="true">
+<button class="gkt-modal__x" data-close aria-label="Закрыть">×</button>
+<div class="gkt-modal__media"><img id="gkt-m-img" alt="" loading="lazy"></div>
+<div class="gkt-modal__body">
+<span class="gkt-badge" id="gkt-m-badge"></span>
+<h3 id="gkt-m-name"></h3>
+<p class="gkt-modal__meta" id="gkt-m-meta"></p>
+<p class="gkt-modal__lead" id="gkt-m-lead"></p>
+<button class="gkt-btn gkt-btn--sm" id="gkt-m-more">Подробнее →</button>
+</div>
+</div>
+</div>
+<!-- Плавающая кнопка возврата к карте -->
+<button class="gkt-tomap" id="gkt-tomap" aria-label="Вернуться к карте">
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+<span>К карте</span>
+</button>
+<style>
+/* =================== ПАЛИТРА И БАЗА =================== */
+#gkt{
+--hero:url("hero.jpg"); /* ФОН ОБЛОЖКИ: файл hero.jpg лежит в репозитории рядом с index.html */
+--bg:#F6F5F2; /* туманно-белый */
+--card:#D8D6D1; /* светло-серый гранит */
+--blue:#587A9A; /* невская синева */
+--ink:#2F4358; /* глубокий сине-серый */
+--sand:#D9C6A4; /* песочный фасад */
+--gold:#C7A25A; /* золото шпилей */
+--water:#cfdae3; /* вода на карте (светлая невская) */
+--fr:#587A9A; --de:#2F4358; --it:#C7A25A;
+--maxw:1080px;
+--serif:"Playfair Display",Georgia,serif;
+--sans:"Inter",-apple-system,Segoe UI,Roboto,sans-serif;
+color:var(--ink);
+font-family:var(--sans);
+background:var(--bg);
+line-height:1.6;
+-webkit-font-smoothing:antialiased;
+font-size:18px;
+overflow-x:hidden;
+}
+#gkt *{box-sizing:border-box;margin:0;padding:0}
+#gkt img{max-width:100%;display:block}
+#gkt .gkt-wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+#gkt .gkt-sec{padding:clamp(64px,9vw,130px) 0;position:relative}
+#gkt .gkt-eyebrow{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:18px}
+#gkt .gkt-h2{font-family:var(--serif);font-weight:600;font-size:clamp(28px,4.4vw,52px);line-height:1.1;color:var(--ink);margin-bottom:24px;letter-spacing:-.01em}
+#gkt .gkt-lead{font-size:clamp(17px,1.5vw,21px);max-width:760px;color:#46586a;margin-bottom:10px}
+#gkt code{background:var(--card);padding:2px 7px;border-radius:5px;font-size:.85em}
+/* =================== КНОПКИ =================== */
+#gkt .gkt-btn{
+font-family:var(--sans);font-size:16px;font-weight:500;cursor:pointer;
+background:var(--blue);color:#fff;border:none;border-radius:40px;
+padding:15px 34px;transition:transform .25s,background .25s,box-shadow .25s;
+box-shadow:0 6px 22px rgba(88,122,154,.28);
+}
+#gkt .gkt-btn:hover{background:var(--ink);transform:translateY(-2px);box-shadow:0 10px 30px rgba(47,67,88,.32)}
+#gkt .gkt-btn--ghost{background:transparent;color:var(--ink);box-shadow:none;border:1.5px solid var(--ink)}
+#gkt .gkt-btn--ghost:hover{background:var(--ink);color:#fff}
+#gkt .gkt-btn--sm{padding:11px 24px;font-size:15px}
+/* =================== ПРОГРЕСС-БАР =================== */
+#gkt .gkt-progress{
+position:fixed;top:0;left:0;right:0;z-index:60;
+background:rgba(246,245,242,.92);backdrop-filter:blur(8px);
+border-bottom:1px solid rgba(47,67,88,.12);
+padding:9px clamp(16px,4vw,40px);
+transform:translateY(-110%);transition:transform .4s ease;
+}
+#gkt .gkt-progress.is-on{transform:translateY(0)}
+#gkt .gkt-progress__row{display:flex;justify-content:space-between;align-items:center;max-width:var(--maxw);margin:0 auto 6px;font-size:13px;letter-spacing:.04em}
+#gkt .gkt-progress__label{text-transform:uppercase;letter-spacing:.16em;color:var(--gold);font-weight:600;font-size:11px}
+#gkt .gkt-progress__count b{font-size:15px;color:var(--ink)}
+#gkt .gkt-progress__track{max-width:var(--maxw);margin:0 auto;height:4px;background:var(--card);border-radius:4px;overflow:hidden}
+#gkt .gkt-progress__fill{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--gold));border-radius:4px;transition:width .5s ease}
+/* =================== ОБЛОЖКА =================== */
+#gkt .gkt-hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;color:#fff}
+#gkt .gkt-hero__bg{
+position:absolute;inset:-8% 0 -8% 0;
+background:#26333f var(--hero) center/cover no-repeat;
+will-change:transform;
+}
+#gkt .gkt-hero__veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(31,44,56,.55),rgba(31,44,56,.42) 40%,rgba(31,44,56,.72))}
+#gkt .gkt-hero__inner{position:relative;z-index:2;max-width:840px;padding:40px 24px}
+#gkt .gkt-hero__kicker{font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--sand);font-weight:600;margin-bottom:26px}
+#gkt .gkt-hero__title{font-family:var(--serif);font-weight:700;font-size:clamp(46px,9vw,108px);line-height:.98;letter-spacing:-.02em;text-shadow:0 4px 40px rgba(0,0,0,.35)}
+#gkt .gkt-hero__sub{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(19px,2.7vw,30px);margin-top:18px;color:#f0ece3}
+#gkt .gkt-hero__quote{max-width:620px;margin:34px auto 0;font-size:clamp(15px,1.6vw,18px);color:#e7e2d8;line-height:1.7}
+#gkt .gkt-hero .gkt-btn{margin-top:38px;background:var(--gold);box-shadow:0 8px 30px rgba(199,162,90,.4)}
+#gkt .gkt-hero .gkt-btn:hover{background:#fff;color:var(--ink)}
+#gkt .gkt-hero__scroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);width:24px;height:40px;border:2px solid rgba(255,255,255,.6);border-radius:14px;z-index:2}
+#gkt .gkt-hero__scroll span{position:absolute;top:7px;left:50%;width:4px;height:8px;margin-left:-2px;background:#fff;border-radius:3px;animation:gkt-scroll 1.6s infinite}
+@keyframes gkt-scroll{0%{opacity:0;transform:translateY(0)}40%{opacity:1}80%{opacity:0;transform:translateY(12px)}100%{opacity:0}}
+/* появление с обложки */
+#gkt .gkt-rise{opacity:0;transform:translateY(26px);animation:gkt-rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+#gkt .gkt-hero__title.gkt-rise{animation-delay:.12s}
+#gkt .gkt-hero__sub.gkt-rise{animation-delay:.24s}
+#gkt .gkt-hero__quote.gkt-rise{animation-delay:.38s}
+#gkt .gkt-hero .gkt-btn.gkt-rise{animation-delay:.52s}
+@keyframes gkt-rise{to{opacity:1;transform:none}}
+/* =================== БЛОК 1 =================== */
+#gkt .gkt-intro{background:var(--bg)}
+#gkt .gkt-cult-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin:48px 0 8px}
+#gkt .gkt-cult{background:var(--card);border-radius:16px;padding:30px 26px;border-top:4px solid var(--ink)}
+#gkt .gkt-cult--fr{border-color:var(--fr)} #gkt .gkt-cult--de{border-color:var(--de)} #gkt .gkt-cult--it{border-color:var(--it)}
+#gkt .gkt-flag{font-size:30px;display:block;margin-bottom:12px}
+#gkt .gkt-cult h3{font-family:var(--serif);font-size:23px;font-weight:600;margin-bottom:10px;color:var(--ink)}
+#gkt .gkt-cult p{font-size:16px;color:#46586a}
+#gkt .gkt-howto{margin-top:54px;background:linear-gradient(135deg,#fff,#f3f1ec);border:1px solid rgba(47,67,88,.1);border-radius:18px;padding:clamp(26px,4vw,44px)}
+#gkt .gkt-howto__title{font-family:var(--serif);font-size:26px;font-weight:600;margin-bottom:18px;color:var(--ink)}
+#gkt .gkt-howto__list{list-style:none;display:grid;gap:12px;margin-bottom:28px}
+#gkt .gkt-howto__list li{padding-left:30px;position:relative;color:#46586a}
+#gkt .gkt-howto__list li::before{content:"";position:absolute;left:0;top:9px;width:11px;height:11px;border-radius:50%;background:var(--gold)}
+#gkt .gkt-zonelist{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+#gkt .gkt-zonecip{background:#fff;border:1px solid rgba(47,67,88,.12);border-radius:12px;padding:14px;text-align:center;transition:transform .25s,box-shadow .25s;cursor:pointer}
+#gkt .gkt-zonecip:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(47,67,88,.12)}
+#gkt .gkt-zonecip b{display:block;font-family:var(--serif);font-size:30px;color:var(--gold);line-height:1}
+#gkt .gkt-zonecip span{font-size:13px;color:#46586a;display:block;margin-top:6px}
+/* =================== ЛЕГЕНДА + КАРТА =================== */
+#gkt .gkt-legend{display:flex;flex-wrap:wrap;gap:10px;margin:30px 0 22px}
+#gkt .gkt-legchip{display:inline-flex;align-items:center;gap:9px;background:var(--card);border-radius:30px;padding:8px 16px 8px 12px;font-size:14px;font-weight:500;cursor:pointer;border:1.5px solid transparent;transition:.25s;user-select:none}
+#gkt .gkt-legchip .dot{width:13px;height:13px;border-radius:50%}
+#gkt .gkt-legchip[data-z="1"]:hover,#gkt .gkt-legchip[data-z="1"].on{border-color:var(--gold)}
+#gkt .gkt-legchip.cult .dot.fr{background:var(--fr)} #gkt .gkt-legchip.cult .dot.de{background:var(--de)} #gkt .gkt-legchip.cult .dot.it{background:var(--it)}
+#gkt .gkt-legchip.cult .dot.frit{background:linear-gradient(90deg,var(--fr) 50%,var(--it) 50%)}
+#gkt .gkt-legchip:hover,#gkt .gkt-legchip.on{border-color:var(--blue);background:#fff}
+#gkt .gkt-map{position:relative;border-radius:20px;overflow:hidden;border:1px solid rgba(47,67,88,.12);box-shadow:0 20px 50px rgba(47,67,88,.1);background:var(--water)}
+#gkt .gkt-map__svg{width:100%;height:auto;display:block}
+#gkt .gkt-land{fill:#e7e3da;stroke:#d3cdc0;stroke-width:1}
+#gkt .gkt-vo{fill:#ece8df}
+#gkt .gkt-canal{fill:none;stroke:var(--water);stroke-width:3;opacity:.9;filter:brightness(.93)}
+#gkt .gkt-fort{fill:#ded7c7;stroke:var(--gold);stroke-width:1.2}
+#gkt .gkt-compass{position:absolute;top:14px;right:16px;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--ink);color:var(--ink);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.7)}
+/* маркеры */
+#gkt .gkt-mk{cursor:pointer}
+#gkt .gkt-mk .hit{fill:transparent}
+#gkt .gkt-mk .ring{fill:#fff;stroke-width:3;transition:r .2s}
+#gkt .gkt-mk .core{transition:transform .2s;transform-origin:center;transform-box:fill-box}
+#gkt .gkt-mk.fr .ring{stroke:var(--fr)} #gkt .gkt-mk.fr .core{fill:var(--fr)}
+#gkt .gkt-mk.de .ring{stroke:var(--de)} #gkt .gkt-mk.de .core{fill:var(--de)}
+#gkt .gkt-mk.it .ring{stroke:var(--it)} #gkt .gkt-mk.it .core{fill:var(--it)}
+#gkt .gkt-mk.frit .ring{stroke:var(--gold)}
+#gkt .gkt-mk .core{opacity:0} /* до открытия — полый */
+#gkt .gkt-mk.opened .core{opacity:1}
+#gkt .gkt-mk:hover .ring{r:11}
+#gkt .gkt-mk:hover .core{transform:scale(1.15)}
+#gkt .gkt-mk.dim{opacity:.22}
+#gkt .gkt-mk.flash .ring{animation:gkt-flash 1.1s ease}
+@keyframes gkt-flash{0%,100%{r:8}50%{r:14}}
+#gkt .gkt-maptip{position:absolute;pointer-events:none;background:var(--ink);color:#fff;font-size:13px;padding:6px 11px;border-radius:8px;transform:translate(-50%,-130%);opacity:0;transition:opacity .15s;white-space:nowrap;z-index:5}
+#gkt .gkt-maptip.on{opacity:1}
+#gkt .gkt-pet-node{cursor:pointer}
+#gkt .gkt-map__hint{margin-top:18px;font-size:15px;color:#71808d}
+/* =================== ВИДЕО =================== */
+#gkt .gkt-videos{background:var(--ink);color:#eef1f4}
+#gkt .gkt-videos .gkt-eyebrow{color:var(--sand)}
+#gkt .gkt-videos .gkt-h2{color:#fff}
+#gkt .gkt-videos .gkt-lead{color:#c4cdd6}
+#gkt .gkt-videogrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px}
+#gkt .gkt-vid{position:relative;border-radius:14px;overflow:hidden;background:#26333f;border:1px solid rgba(255,255,255,.1)}
+#gkt .gkt-vid__ratio{position:relative;width:100%;padding-top:56.25%}
+#gkt .gkt-vid iframe,#gkt .gkt-vid__ph{position:absolute;inset:0;width:100%;height:100%;border:0}
+#gkt .gkt-vid__ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#aeb9c4;text-align:center;padding:20px;cursor:default}
+#gkt .gkt-vid__play{width:62px;height:62px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center}
+#gkt .gkt-vid__play::after{content:"";border-left:18px solid var(--ink);border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:4px}
+#gkt .gkt-vid__cap{padding:14px 18px;font-size:15px;font-weight:500;color:#dfe5ea}
+/* =================== МАРШРУТ / ЗОНЫ =================== */
+#gkt .gkt-zone{padding:clamp(60px,8vw,110px) 0;position:relative;overflow:hidden}
+#gkt .gkt-zone:nth-child(odd){background:var(--bg)}
+#gkt .gkt-zone:nth-child(even){background:linear-gradient(180deg,#efece6,#f6f5f2)}
+#gkt .gkt-zhead{position:relative;text-align:center;margin-bottom:54px}
+#gkt .gkt-zbignum{font-family:var(--serif);font-size:clamp(120px,26vw,300px);font-weight:700;color:rgba(47,67,88,.05);line-height:.8;position:absolute;top:-26%;left:50%;transform:translateX(-50%);z-index:0;pointer-events:none;user-select:none}
+#gkt .gkt-zsil{position:relative;z-index:1;width:min(360px,72vw);margin:0 auto 14px;color:var(--gold)}
+#gkt .gkt-zsil .bld{width:100%;height:auto;opacity:0;transform:translateY(50px) scale(.96);transition:opacity 1s,transform 1.1s cubic-bezier(.2,.7,.2,1)}
+#gkt .gkt-zsil.in .bld{opacity:1;transform:none}
+#gkt .gkt-zsil .bld [data-draw]{stroke-dasharray:100;stroke-dashoffset:100;transition:stroke-dashoffset 1.6s ease .15s}
+#gkt .gkt-zsil.in .bld [data-draw]{stroke-dashoffset:0}
+#gkt .gkt-zsil .bld .fillpart{opacity:0;transition:opacity .9s ease .5s}
+#gkt .gkt-zsil.in .bld .fillpart{opacity:1}
+#gkt .gkt-zlabel{position:relative;z-index:1}
+#gkt .gkt-zlabel .gkt-eyebrow{display:block;margin-bottom:10px}
+#gkt .gkt-zone h2{font-family:var(--serif);font-weight:600;font-size:clamp(28px,4.4vw,48px);color:var(--ink);line-height:1.08}
+#gkt .gkt-zsub{margin-top:14px;color:#5a6b7a;font-size:16px}
+#gkt .gkt-zsub b{color:var(--ink)}
+/* карточки локусов */
+#gkt .gkt-cards{display:grid;gap:34px;max-width:920px;margin:0 auto}
+#gkt .gkt-card{display:grid;grid-template-columns:.95fr 1.05fr;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 14px 40px rgba(47,67,88,.09);border:1px solid rgba(47,67,88,.07);opacity:0;transform:translateY(40px);transition:opacity .8s,transform .9s cubic-bezier(.2,.7,.2,1)}
+#gkt .gkt-card.in{opacity:1;transform:none}
+#gkt .gkt-card:nth-child(even){grid-template-columns:1.05fr .95fr}
+#gkt .gkt-card:nth-child(even) .gkt-card__media{order:2}
+#gkt .gkt-card__media{position:relative;min-height:260px;overflow:hidden;background:var(--card)}
+#gkt .gkt-card__media img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform 1.4s ease}
+#gkt .gkt-card:hover .gkt-card__media img{transform:scale(1.06)}
+#gkt .gkt-card__num{position:absolute;top:14px;left:14px;z-index:2;background:rgba(255,255,255,.92);color:var(--ink);font-weight:600;font-size:13px;padding:4px 11px;border-radius:20px}
+#gkt .gkt-card__body{padding:clamp(22px,3vw,38px)}
+#gkt .gkt-badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:5px 12px;border-radius:20px;color:#fff;margin-bottom:14px}
+#gkt .gkt-badge.fr{background:var(--fr)} #gkt .gkt-badge.de{background:var(--de)} #gkt .gkt-badge.it{background:var(--it)}
+#gkt .gkt-badge.frit{background:linear-gradient(90deg,var(--fr),var(--it))}
+#gkt .gkt-card__name{font-family:var(--serif);font-size:clamp(22px,2.4vw,30px);font-weight:600;color:var(--ink);line-height:1.12;margin-bottom:10px}
+#gkt .gkt-card__meta{font-size:13.5px;color:#7a8893;margin-bottom:16px;letter-spacing:.01em}
+#gkt .gkt-card__lead{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--blue);margin-bottom:14px;line-height:1.5}
+#gkt .gkt-card__text{font-size:16px;color:#46586a;margin-bottom:16px}
+#gkt .gkt-card__src{font-size:13px;color:#9aa5ae}
+#gkt .gkt-card__src b{color:var(--gold);font-weight:600}
+/* =================== ПАСПОРТ =================== */
+#gkt .gkt-passport{background:linear-gradient(160deg,#2F4358,#3c5670);color:#eef1f4}
+#gkt .gkt-passport .gkt-eyebrow{color:var(--sand)}
+#gkt .gkt-passport .gkt-h2{color:#fff}
+#gkt .gkt-passport .gkt-lead{color:#cdd6df}
+#gkt .gkt-pass{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:clamp(26px,4vw,46px);margin:40px 0 26px;display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center}
+#gkt .gkt-pass__num{font-family:var(--serif);font-size:clamp(64px,11vw,120px);font-weight:700;color:var(--gold);line-height:.9;display:block}
+#gkt .gkt-pass__of{font-size:17px;color:#dbe2e9}
+#gkt .gkt-pass__bar{height:8px;background:rgba(255,255,255,.16);border-radius:8px;margin-top:18px;overflow:hidden}
+#gkt .gkt-pass__barfill{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--sand));transition:width .8s ease}
+#gkt .gkt-pass__cults{display:grid;gap:14px}
+#gkt .gkt-passc{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.05);border-radius:12px;padding:14px 20px;border-left:4px solid}
+#gkt .gkt-passc--fr{border-color:var(--fr)} #gkt .gkt-passc--de{border-color:#7d97b4} #gkt .gkt-passc--it{border-color:var(--it)}
+#gkt .gkt-passc__flag{font-size:24px}
+#gkt .gkt-passc b{font-family:var(--serif);font-size:30px;min-width:42px}
+#gkt .gkt-passc i{font-style:normal;color:#c3cdd6;font-size:15px}
+#gkt .gkt-pass__text{max-width:760px;font-size:18px;color:#d3dbe3;margin-bottom:26px}
+#gkt .gkt-pass__actions{display:flex;gap:14px;flex-wrap:wrap}
+#gkt .gkt-passport .gkt-btn--ghost{color:#fff;border-color:rgba(255,255,255,.5)}
+#gkt .gkt-passport .gkt-btn--ghost:hover{background:#fff;color:var(--ink)}
+/* =================== ТИТРЫ =================== */
+#gkt .gkt-credits{background:var(--bg);padding-bottom:80px}
+#gkt .gkt-team{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:40px}
+#gkt .gkt-team h4{font-family:var(--serif);font-size:21px;color:var(--ink);margin-bottom:12px}
+#gkt .gkt-team p{color:#46586a;margin-bottom:6px}
+#gkt .gkt-muted{color:#8b96a0;font-size:14px}
+#gkt .gkt-biblio{background:var(--card);border-radius:14px;padding:6px 24px;margin-bottom:26px}
+#gkt .gkt-biblio summary{cursor:pointer;font-weight:600;color:var(--ink);padding:16px 0;list-style:none;font-size:17px}
+#gkt .gkt-biblio summary::-webkit-details-marker{display:none}
+#gkt .gkt-biblio summary::before{content:"+ ";color:var(--gold);font-weight:700}
+#gkt .gkt-biblio[open] summary::before{content:"– "}
+#gkt .gkt-biblio__body{padding:0 0 18px}
+#gkt .gkt-biblio ol{padding-left:22px;color:#46586a}
+#gkt .gkt-biblio li{margin-bottom:8px;font-size:15px}
+#gkt .gkt-sign{text-align:center;color:#9aa5ae;font-size:14px;margin-top:30px}
+/* =================== МОДАЛКА =================== */
+#gkt .gkt-modal{position:fixed;inset:0;z-index:80;display:none}
+#gkt .gkt-modal.on{display:block}
+#gkt .gkt-modal__overlay{position:absolute;inset:0;background:rgba(31,44,56,.62);backdrop-filter:blur(4px);animation:gkt-fade .3s}
+#gkt .gkt-modal__card{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(560px,92vw);max-height:90vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 30px 80px rgba(0,0,0,.4);animation:gkt-pop .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes gkt-fade{from{opacity:0}} @keyframes gkt-pop{from{opacity:0;transform:translate(-50%,-46%) scale(.96)}}
+#gkt .gkt-modal__media{height:240px;background:var(--card)}
+#gkt .gkt-modal__media img{width:100%;height:100%;object-fit:cover}
+#gkt .gkt-modal__x{position:absolute;top:12px;right:14px;z-index:3;width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,.92);font-size:24px;line-height:1;color:var(--ink);cursor:pointer}
+#gkt .gkt-modal__body{padding:24px 28px 30px}
+#gkt .gkt-modal__meta{font-size:13.5px;color:#7a8893;margin:6px 0 14px}
+#gkt .gkt-modal__lead{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--blue);margin-bottom:20px;line-height:1.5}
+#gkt .gkt-modal__body h3{font-family:var(--serif);font-size:26px;font-weight:600;color:var(--ink)}
+/* =================== REVEAL =================== */
+#gkt .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+#gkt .reveal.in{opacity:1;transform:none}
+/* =================== АДАПТИВ =================== */
+@media(max-width:880px){
+#gkt .gkt-cult-cards{grid-template-columns:1fr}
+#gkt .gkt-zonelist{grid-template-columns:repeat(2,1fr)}
+#gkt .gkt-videogrid{grid-template-columns:1fr}
+#gkt .gkt-card,#gkt .gkt-card:nth-child(even){grid-template-columns:1fr}
+#gkt .gkt-card__media{min-height:220px;position:relative;height:220px}
+#gkt .gkt-card:nth-child(even) .gkt-card__media{order:0}
+#gkt .gkt-pass{grid-template-columns:1fr;gap:24px}
+}
+@media(max-width:560px){
+#gkt{font-size:17px}
+#gkt .gkt-wrap{padding:0 18px}
+#gkt .gkt-zonelist{grid-template-columns:1fr}
+#gkt .gkt-legend{gap:8px}
+#gkt .gkt-modal__media{height:190px}
+}
+@media(prefers-reduced-motion:reduce){
+#gkt *{animation-duration:.001ms!important;transition-duration:.05ms!important}
+#gkt .reveal,#gkt .gkt-card,#gkt .gkt-rise{opacity:1;transform:none}
+}
+#gkt .gkt-tomap{position:fixed;right:20px;bottom:24px;z-index:65;display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;border:none;cursor:pointer;font-family:var(--sans);font-size:15px;font-weight:500;padding:12px 18px;border-radius:40px;box-shadow:0 8px 26px rgba(47,67,88,.32);opacity:0;visibility:hidden;transform:translateY(16px);transition:opacity .35s,transform .35s,visibility .35s,background .25s}
+#gkt .gkt-tomap.is-on{opacity:1;visibility:visible;transform:none}
+#gkt .gkt-tomap:hover{background:var(--ink);transform:translateY(-2px)}
+#gkt .gkt-tomap svg{flex:none}
+@media(max-width:560px){#gkt .gkt-tomap{right:14px;bottom:16px;padding:11px 15px;font-size:14px}}#gkt .gkt-appendix{display:flex;align-items:center;justify-content:space-between;gap:18px;text-decoration:none;background:linear-gradient(135deg,var(--ink),#3c5670);color:#fff;border-radius:16px;padding:24px 28px;margin:0 0 26px;box-shadow:0 14px 36px rgba(47,67,88,.18);transition:transform .25s,box-shadow .25s}
+#gkt .gkt-appendix:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(47,67,88,.26)}
+#gkt .gkt-appendix__body{display:flex;flex-direction:column;gap:5px}
+#gkt .gkt-appendix__body b{font-family:var(--serif);font-size:clamp(20px,2.4vw,26px);font-weight:600}
+#gkt .gkt-appendix__body i{font-style:normal;color:#cdd6df;font-size:15px}
+#gkt .gkt-appendix__arrow{flex:none;width:46px;height:46px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:22px;transition:transform .25s}
+#gkt .gkt-appendix:hover .gkt-appendix__arrow{transform:translateX(4px)}
+@media(max-width:560px){#gkt .gkt-appendix{padding:20px 22px}}
+#gkt .gkt-hero__links{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:16px}
+#gkt .gkt-hero__btn2{display:inline-block;width:-moz-fit-content;width:fit-content;font-size:15px;font-weight:500;color:#fff;text-decoration:none;background:transparent;border:1.5px solid rgba(255,255,255,.55);border-radius:40px;padding:13px 28px;transition:background .25s,color .25s,border-color .25s,transform .25s}
+#gkt .gkt-hero__btn2:hover{background:#fff;color:var(--ink);border-color:#fff;transform:translateY(-2px)}
+#gkt .gkt-hero__quest.gkt-rise{animation-delay:.62s}
+#gkt .gkt-hero__appendix.gkt-rise{animation-delay:.72s}
+</style>
+<script>
+(function(){
+"use strict";
+var root=document.getElementById("gkt");
+if(!root||root.dataset.init)return; root.dataset.init="1";
+var APPENDIX_URL="science.html"; /* адрес 2-й страницы «Научное приложение» — поменяйте при необходимости */
+var QUEST_URL="quest.html"; /* страница квеста */
+root.querySelectorAll(".gkt-appendix,.gkt-hero__appendix").forEach(function(a){a.setAttribute("href",APPENDIX_URL);});
+root.querySelectorAll(".gkt-hero__quest").forEach(function(a){a.setAttribute("href",QUEST_URL);});
+/* ---------- ИЗОБРАЖЕНИЯ (Wikimedia Commons, проверенные ссылки) ---------- */
+/* Чтобы заменить фото — впишите свой URL вместо значения по ключу. */
+var IMG={
+"1.1":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Neva_river_01.jpg/960px-Neva_river_01.jpg",
+"1.2":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/RUS-2016-Aerial-SPB-Peter_and_Paul_Fortress_02.jpg/960px-RUS-2016-Aerial-SPB-Peter_and_Paul_Fortress_02.jpg",
+"1.3":"https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/E%D0%B2%D0%B0%D0%BD%D0%B3%D0%B5%D0%BB%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE-%D0%BB%D1%8E%D1%82%D0%B5%D1%80%D0%B0%D0%BD%D1%81%D0%BA%D0%B0%D1%8F_%D1%86%D0%B5%D1%80%D0%BA%D0%BE%D0%B2%D1%8C_%D0%A1%D0%B2%D1%8F%D1%82%D0%BE%D0%B3%D0%BE_%D0%9C%D0%B8%D1%85%D0%B0%D0%B8%D0%BB%D0%B0_01.JPG/960px-E%D0%B2%D0%B0%D0%BD%D0%B3%D0%B5%D0%BB%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE-%D0%BB%D1%8E%D1%82%D0%B5%D1%80%D0%B0%D0%BD%D1%81%D0%BA%D0%B0%D1%8F_%D1%86%D0%B5%D1%80%D0%BA%D0%BE%D0%B2%D1%8C_%D0%A1%D0%B2%D1%8F%D1%82%D0%BE%D0%B3%D0%BE_%D0%9C%D0%B8%D1%85%D0%B0%D0%B8%D0%BB%D0%B0_01.JPG",
+"1.4":"https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Heinrich_Schliemann_%28HeidICON_28763%29_%28cropped%29.jpg/960px-Heinrich_Schliemann_%28HeidICON_28763%29_%28cropped%29.jpg",
+"1.5":"",
+"1.6":"https://upload.wikimedia.org/wikipedia/commons/7/7b/%D0%91%D0%B0%D1%88%D0%BD%D1%8F_%D0%B3%D1%80%D0%B8%D1%84%D0%BE%D0%BD%D0%B0_-_panoramio.jpg",
+"1.7":"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/%D0%93%D0%B8%D0%BC%D0%BD%D0%B0%D0%B7%D0%B8%D1%8F_%D0%9C%D0%B0%D1%8F.jpg/960px-%D0%93%D0%B8%D0%BC%D0%BD%D0%B0%D0%B7%D0%B8%D1%8F_%D0%9C%D0%B0%D1%8F.jpg",
+"1.8":"https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Spb_06-2017_img01_Spit_of_Vasilievsky_Island.jpg/960px-Spb_06-2017_img01_Spit_of_Vasilievsky_Island.jpg",
+"1.9":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Sevkabel.jpg/960px-Sevkabel.jpg",
+"2.1":"https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Spb_06-2012_Nevsky_various_03.jpg/960px-Spb_06-2012_Nevsky_various_03.jpg",
+"2.2":"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Sankt-Pet%C4%9Brburg_134.jpg/960px-Sankt-Pet%C4%9Brburg_134.jpg",
+"2.3":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Petrogradskaya_Embankment_01.jpg/960px-Petrogradskaya_Embankment_01.jpg",
+"2.4":"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Glinka_Capella_2004.jpg/960px-Glinka_Capella_2004.jpg",
+"3.1":"https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/%D0%9C%D0%B8%D0%BB%D0%BB%D0%B8%D0%BE%D0%BD%D0%BD%D0%B0%D1%8F_%D1%81_3_%D1%8D%D1%82%D0%B0%D0%B6%D0%B0_%D0%97%D0%B8%D0%BC%D0%BD%D0%B5%D0%B3%D0%BE.JPG/960px-%D0%9C%D0%B8%D0%BB%D0%BB%D0%B8%D0%BE%D0%BD%D0%BD%D0%B0%D1%8F_%D1%81_3_%D1%8D%D1%82%D0%B0%D0%B6%D0%B0_%D0%97%D0%B8%D0%BC%D0%BD%D0%B5%D0%B3%D0%BE.JPG",
+"3.2":"https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Balzac_G%C3%A9rard-S%C3%A9guin.jpg/960px-Balzac_G%C3%A9rard-S%C3%A9guin.jpg",
+"3.3":"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Spb_06-2012_English_Embankment_01.jpg/960px-Spb_06-2012_English_Embankment_01.jpg",
+"3.4":"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/St._Petersburg%2C_German_Embassy.jpg/960px-St._Petersburg%2C_German_Embassy.jpg",
+"3.5":"https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Manezhnaya_Square_SPB_01.jpg/960px-Manezhnaya_Square_SPB_01.jpg",
+"3.6":"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Italianskaya_Street_main.jpg/960px-Italianskaya_Street_main.jpg",
+"4.1":"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Galaktionov_Smolny_institute_1823.jpg/960px-Galaktionov_Smolny_institute_1823.jpg",
+"4.2":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Liteyny_Avenue_01.jpg/960px-Liteyny_Avenue_01.jpg",
+"4.3":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Lurdska_matka_bosca_cathedral.jpg/960px-Lurdska_matka_bosca_cathedral.jpg",
+"4.4":"https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/%D0%9D%D0%B5%D0%BC%D0%B5%D1%86%D0%BA%D0%B0%D1%8F_%D0%BB%D1%8E%D1%82%D0%B5%D1%80%D0%B0%D0%BD%D1%81%D0%BA%D0%B0%D1%8F_%D1%86%D0%B5%D1%80%D0%BA%D0%BE%D0%B2%D1%8C_%D1%81%D0%B2._%D0%90%D0%BD%D0%BD%D1%8B08.jpg/960px-%D0%9D%D0%B5%D0%BC%D0%B5%D1%86%D0%BA%D0%B0%D1%8F_%D0%BB%D1%8E%D1%82%D0%B5%D1%80%D0%B0%D0%BD%D1%81%D0%BA%D0%B0%D1%8F_%D1%86%D0%B5%D1%80%D0%BA%D0%BE%D0%B2%D1%8C_%D1%81%D0%B2._%D0%90%D0%BD%D0%BD%D1%8B08.jpg",
+"4.5":"https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Petrikirche_SPb.jpg/960px-Petrikirche_SPb.jpg",
+"4.6":"https://upload.wikimedia.org/wikipedia/commons/f/f5/Peterschule.JPG",
+"4.7":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Nevsky_Prospekt_20240912_114912_MP.jpg/960px-Nevsky_Prospekt_20240912_114912_MP.jpg",
+"5.1":"https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Spb_06-2012_Moika_various_02.jpg/960px-Spb_06-2012_Moika_various_02.jpg",
+"5.2":"https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/%D0%A6%D0%B8%D1%80%D0%BA_%D0%A7%D0%B8%D0%BD%D0%B8%D0%B7%D0%B5%D0%BB%D0%BB%D0%B8_-_%D0%B2%D0%B8%D0%B4_%D1%81%D0%BE_%D1%81%D1%82%D0%BE%D1%80%D0%BE%D0%BD%D1%8B_%D0%A4%D0%BE%D0%BD%D1%82%D0%B0%D0%BD%D0%BA%D0%B8._%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3.jpg/960px-%D0%A6%D0%B8%D1%80%D0%BA_%D0%A7%D0%B8%D0%BD%D0%B8%D0%B7%D0%B5%D0%BB%D0%BB%D0%B8_-_%D0%B2%D0%B8%D0%B4_%D1%81%D0%BE_%D1%81%D1%82%D0%BE%D1%80%D0%BE%D0%BD%D1%8B_%D0%A4%D0%BE%D0%BD%D1%82%D0%B0%D0%BD%D0%BA%D0%B8._%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3.jpg",
+"5.3":"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Grand_Cascade_in_Peterhof_01.jpg/960px-Grand_Cascade_in_Peterhof_01.jpg"
+};
+var CULTNAME={fr:"Французская",de:"Немецкая",it:"Итальянская"};
+function srcByCult(c){
+var m={fr:"Французский Петербург",de:"Немецкий Петербург",it:"Итальянский Петербург"};
+return c.map(function(x){return m[x]}).join(" + ")+". Лингвокультурологическая глава, 2026";
+}
+/* фолбэк-картинка (брендовый SVG с названием) */
+function fallback(name,cult){
+var col={fr:"#587A9A",de:"#2F4358",it:"#C7A25A"}[cult[0]]||"#2F4358";
+var s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">'
++'<rect width="600" height="400" fill="#D8D6D1"/>'
++'<rect width="600" height="400" fill="'+col+'" opacity="0.12"/>'
++'<g fill="none" stroke="'+col+'" stroke-width="3" opacity="0.7">'
++'<path d="M210 250 V160 L300 120 L390 160 V250 Z"/><path d="M240 250 V175 M270 250 V175 M330 250 V175 M360 250 V175"/>'
++'<path d="M300 120 V92 M292 100 h16"/><line x1="150" y1="250" x2="450" y2="250"/></g>'
++'<text x="300" y="320" fill="'+col+'" font-family="Georgia,serif" font-size="26" text-anchor="middle">'+name.replace(/&/g,"&amp;").replace(/</g,"&lt;")+'</text></svg>';
+return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(s);
+}
+/* ---------- ДАННЫЕ ЛОКУСОВ (координаты = реальная география) ---------- */
+var L=[
+{id:"1.1",z:1,c:["fr"],name:"Французская слобода",meta:"1–4 линии В.О. · ок. 1710-х",x:359.5,y:257.7,
+lead:"Первая французская улица Петербурга — и единственный локус маршрута, чей физический след полностью стёрт с карты города.",
+text:"Французская слобода стала первым центром французского присутствия в Петербурге. В начале XVIII века здесь жили приглашённые Петром I мастера, художники и ремесленники, работавшие на строительство новой столицы. Именно здесь возникли первые формы русско-французского языкового и культурного взаимодействия. Сегодня от слободы не осталось физических следов, но её память сохраняется в истории Васильевского острова."},
+{id:"1.2",z:1,c:["it"],name:"Петропавловская крепость",meta:"Заячий остров · с 1703",x:529.8,y:145.5,
+lead:"С чего начинался итальянский Петербург — первое здание города, спроектированное итальянцем.",
+text:"История итальянского Петербурга начинается вместе с историей самого города. В строительстве крепости участвовали итальянские архитекторы, а европейские принципы фортификации стали частью нового городского пространства. Петропавловская крепость напоминает о том, что Петербург с первых дней создавался как международный проект, в котором важную роль играли мастера из Италии."},
+{id:"1.3",z:1,c:["de"],name:"Церковь Святого Михаила",meta:"Васильевский остров · 1871–1876",x:322.6,y:235.7,
+lead:"Неоготический шпиль среди петербургских крыш — привет от ганзейских городов Северной Европы.",
+text:"Неоготическая церковь Святого Михаила стала духовным центром немецкой общины Васильевского острова. Её высокий шпиль и архитектурный облик отсылают к традициям Северной Германии и ганзейских городов. Храм напоминает о многочисленных немецких семьях, которые жили, работали и сохраняли свою культурную идентичность в Петербурге."},
+{id:"1.4",z:1,c:["de"],name:"Дом Шлимана",meta:"1-я линия В.О. · с 1846",x:387.0,y:253.3,
+lead:"Здесь будущий первооткрыватель Трои был ещё просто разбогатевшим немецким купцом.",
+text:"В этом доме жил Генрих Шлиман — немецкий купец, который позже прославился как археолог и первооткрыватель Трои. Петербургский период его жизни связан с торговлей и предпринимательством, благодаря которым он смог накопить состояние для будущих исследований. Дом Шлимана напоминает о роли немецких предпринимателей в экономической жизни города."},
+{id:"1.5",z:1,c:["de"],name:"Церковь Святой Екатерины (Катариненкирхе)",meta:"Васильевский остров · 1768–1771",x:373.3,y:233.5,
+lead:"Орган из Регенсбурга, советская студия звукозаписи и снова орган — судьба одной кирхи в трёх эпохах.",
+text:"Катариненкирхе была одним из важнейших центров немецкой лютеранской общины Петербурга. Здесь звучала немецкая речь, проходили богослужения и формировалась культурная жизнь прихода. История кирхи отражает судьбу немецкого наследия города: от расцвета в имперскую эпоху до утрат XX века и современного возрождения."},
+{id:"1.6",z:1,c:["de"],name:"Аптека Пеля (Башня грифонов)",meta:"7-я линия В.О., 16–18 · с 1850-х",x:333.1,y:264.3,
+lead:"Горожане были уверены, что немцы-аптекари по ночам варят золото — а на деле здесь просто стерилизовали лекарства.",
+text:"Аптека Пеля стала символом немецкой научной и фармацевтической традиции в Петербурге. Её владельцы внедряли современные методы производства лекарств, однако среди горожан появились легенды о таинственных опытах и алхимии. Так рядом с немецкой рациональностью возник один из самых известных городских мифов — история Башни грифонов."},
+{id:"1.7",z:1,c:["de"],name:"Школа Карла Мая",meta:"Васильевский остров · XIX век",x:289.0,y:313.8,
+lead:"«Сперва люблю — потом учу» — девиз школы, выпустившей Бенуа, Рериха и Лихачёва.",
+text:"Школа Карла Мая была одной из самых прогрессивных гимназий Петербурга. Её основатель стремился воспитывать учеников через уважение к личности, а не через строгую дисциплину. Среди выпускников школы — многие известные деятели науки и культуры, что сделало её важной частью немецкого образовательного наследия города."},
+{id:"1.8",z:1,c:["de"],name:"Биржевая площадь",meta:"Стрелка В.О. · с 1720-х",x:469.7,y:204.9,
+lead:"«Орднунг» на берегах Невы — как немецкая торговая этика прижилась на петербургской бирже.",
+text:"На Стрелке Васильевского острова пересекались торговые интересы купцов со всей Европы. Немецкие предприниматели сыграли важную роль в развитии петербургской торговли, привнеся традиции деловой этики, точности и надёжности. Поэтому Биржевая площадь стала символом немецкого экономического влияния на город."},
+{id:"1.9",z:1,c:["de"],name:"Севкабель Порт",meta:"Набережная В.О. · завод с 1879",x:92.3,y:398.5,
+lead:"От немецкого завода Siemens до модного креативного пространства — индустриальная немецкая страница острова.",
+text:"История Севкабеля начинается с немецкой компании Siemens, которая создала здесь кабельный завод в конце XIX века. Именно отсюда начиналась электрификация многих районов Петербурга. Сегодня бывшее промышленное пространство превратилось в культурный кластер, сохранив память о немецкой инженерной традиции города."},
+{id:"2.1",z:2,c:["fr","it"],name:"Базилика Святой Екатерины Александрийской",meta:"Невский пр., 32–34 · 1761–1783 · ⭐ точка пересечения",x:595.3,y:303.9,
+lead:"Единственное место маршрута, где две культурные линии — французская и итальянская — встречаются в одном здании.",
+text:"Французская линия. Проект в стиле французского академического классицизма разработал Жан-Батист-Мишель Валлен-Деламот, прибывший по приглашению графа Шувалова; после революции 1789 года приток эмигрантов укрепил приход (среди прихожан — Растрелли и Монферран, в крипте похоронен генерал Жан Виктор Моро). Итальянская линия. С базиликой связаны и многие представители итальянской культуры — архитекторы итальянского происхождения, участвовавшие в создании облика Петербурга. Поэтому храм можно считать местом встречи двух европейских традиций."},
+{id:"2.2",z:2,c:["fr"],name:"Французский институт",meta:"Невский пр., 12 · с 1911",x:520.4,y:280.8,
+lead:"Единственный локус, где французская лингвокультура живёт не в памяти, а в настоящем — прямо сейчас, сегодня.",
+text:"Французское присутствие в Петербурге не осталось только частью истории. Сегодня его продолжает Французский институт — место, где проходят выставки, кинопоказы, лекции и языковые программы. Это один из немногих локусов маршрута, где французская культура существует не как память о прошлом, а как часть современной городской жизни."},
+{id:"2.3",z:2,c:["de"],name:"Дом Шрёдера",meta:"Петроградская набережная · XIX век",x:637.7,y:74.0,
+lead:"Рояли, на которых играли Римский-Корсаков и Лист, делались на немецкой фабрике в Петербурге.",
+text:"В XIX веке Петербург был одним из музыкальных центров Европы, и важную роль в этом сыграли немецкие мастера. На фабрике Шрёдера создавались рояли и пианино, известные далеко за пределами России. Музыкальные инструменты отсюда звучали в концертных залах, учебных заведениях и частных гостиных, связывая Петербург с немецкой музыкальной традицией."},
+{id:"2.4",z:2,c:["it"],name:"Государственная академическая капелла",meta:"Певческий мост · XVIII–XIX вв.",x:569.4,y:250.0,
+lead:"Даже название моста рядом с Капеллой — это памятник итальянской оперной традиции в русской топонимике.",
+text:"История Капеллы тесно связана с развитием европейской музыкальной культуры в России. Итальянские композиторы, дирижёры и певцы внесли огромный вклад в становление придворной музыкальной жизни Петербурга. Даже название соседнего Певческого моста напоминает о времени, когда итальянская опера была важной частью культурной жизни города."},
+{id:"3.1",z:3,c:["fr"],name:"Французское посольство на Миллионной",meta:"Миллионная ул., 25 · 1808–1850-е",x:593.7,y:224.7,
+lead:"Сюда в январе 1837 года приехал Пушкин для переговоров перед роковой дуэлью.",
+text:"В XIX веке Миллионная улица была одним из центров дипломатической жизни Петербурга. Здесь располагалось французское посольство, через которое проходили важнейшие политические и культурные связи между Россией и Францией. Это место напоминает о времени, когда французский язык был языком международного общения российской элиты."},
+{id:"3.2",z:3,c:["fr"],name:"Дом Бальзака",meta:"Миллионная ул., 16 · 1843",x:581.5,y:232.4,
+lead:"Десять недель в меблированных комнатах — и одна большая любовь французского классика к польской графине напротив.",
+text:"В 1843 году здесь останавливался знаменитый французский писатель Оноре де Бальзак. Несколько недель, проведённых в Петербурге, позволили ему увидеть город глазами европейского путешественника. Сегодня этот адрес напоминает о литературных связях Петербурга и Франции и о том, что город вдохновлял не только русских авторов."},
+{id:"3.3",z:3,c:["de"],name:"Дом Бисмарка",meta:"Английская набережная, 50 · 1859–1862",x:403.6,y:341.3,
+lead:"Будущий «железный канцлер» три года жил в Петербурге послом Пруссии — и многое здесь перенял.",
+text:"До того как стать «железным канцлером» Германии, Отто фон Бисмарк несколько лет жил в Петербурге в качестве прусского дипломата. Именно здесь он наблюдал за российской политикой и обществом, приобретая опыт, который позже пригодился ему в объединении Германии. Дом Бисмарка остаётся одним из самых известных немецких адресов города."},
+{id:"3.4",z:3,c:["de"],name:"Дом Германского посольства",meta:"Исаакиевская пл., 11 · 1913",x:478.0,y:341.3,
+lead:"Здание, которое горожане буквально атаковали — петербуржцы не приняли обнажённую немецкую скульптуру на крыше.",
+text:"Здание Германского посольства стало одним из самых обсуждаемых архитектурных проектов начала XX века. Его монументальный облик отражал стремление Германии продемонстрировать свою силу и влияние. История посольства показывает, насколько тесными и одновременно сложными были отношения между Петербургом и немецким миром."},
+{id:"3.5",z:3,c:["it"],name:"Манежная площадь",meta:"Рядом с Итальянской улицей",x:651.5,y:299.5,
+lead:"Четыре бюста на одной площади — это памятник всем итальянским архитекторам, построившим Петербург.",
+text:"На Манежной площади можно увидеть памятники архитекторам, которые приехали в Россию из Италии и помогли создать облик Петербурга. Благодаря их работе город приобрёл черты европейской столицы. Площадь напоминает о том, что многие привычные нам здания появились благодаря таланту итальянских мастеров."},
+{id:"3.6",z:3,c:["it"],name:"Итальянская улица и Семимостье",meta:"Канал Грибоедова · название с 1739",x:632.2,y:300.6,
+lead:"Дворца давно нет, а название «Итальянская» живёт уже почти 300 лет — и продолжает «заражать» соседние объекты.",
+text:"Название «Итальянская» появилось на карте Петербурга ещё в XVIII веке и сохранилось до наших дней. Хотя Итальянский дворец, давший имя улице, давно исчез, память о нём продолжает жить в городском пространстве. Так один культурный след породил целую систему топонимов, которая напоминает о роли Италии в истории Петербурга."},
+{id:"4.1",z:4,c:["fr"],name:"Смольный институт благородных девиц",meta:"пл. Растрелли, 1 · с 1764",x:967.2,y:168.6,
+lead:"«Мовешками» и «парфетками» здесь называли воспитанниц — и эти французские слова вошли в обиход на десятилетия.",
+text:"Если прислушаться к разговорам воспитанниц Смольного XIX века, можно было бы услышать французскую речь почти так же часто, как русскую. Французский язык считался обязательной частью образования и признаком хорошего тона. Именно здесь многие поколения девушек знакомились не только с языком, но и с французской культурой, ставшей неотъемлемой частью жизни петербургской аристократии."},
+{id:"4.2",z:4,c:["fr"],name:"Садик «Сен-Жермен»",meta:"Литейный пр., 46 · имя с 1970-х",x:702.8,y:268.7,
+lead:"Бродский, Довлатов и Цой собирались в садике, который ленинградская богема сама окрестила именем парижского квартала.",
+text:"Спрятанный во дворах Литейного проспекта, этот небольшой сквер почти невозможно найти случайно. В советские годы здесь собирались поэты, музыканты и художники ленинградского андеграунда. Название «Сен-Жермен» возникло неофициально — по аналогии с парижским кварталом интеллектуалов и богемы. Так в центре Ленинграда появился свой маленький кусочек Парижа."},
+{id:"4.3",z:4,c:["fr"],name:"Храм Лурдской Божией Матери",meta:"Ковенский пер., 7 · 1903–1909",x:764.5,y:302.8,
+lead:"Храм, который никогда не закрывался — и даже принимал президента Франции Шарля де Голля в советском Ленинграде.",
+text:"Среди привычных петербургских фасадов неожиданно появляется католический храм, напоминающий о французской духовной традиции. Он был построен для французской общины города и пережил все потрясения XX века, оставаясь действующим даже в советское время. Благодаря этому храм стал не только религиозным центром, но и символом непрерывности французского присутствия в Петербурге."},
+{id:"4.4",z:4,c:["de"],name:"Анненкирхе",meta:"Кирочная ул. · 1775–1779",x:779.9,y:214.8,
+lead:"Кинотеатр «Спартак», пожар, обгоревшие стены — и сегодня церковь, которая не прячет свои шрамы, а выставляет их напоказ.",
+text:"Сегодня Анненкирхе встречает посетителей обгоревшими стенами и следами времени, которые здесь решили не скрывать. Однако её история началась как история немецкой лютеранской общины Петербурга. За два с половиной столетия церковь успела побывать храмом, кинотеатром и концертной площадкой, став одним из самых необычных памятников немецкого наследия города."},
+{id:"4.5",z:4,c:["de"],name:"Петрикирхе",meta:"Невский проспект · проект Брюллова",x:575.5,y:298.4,
+lead:"От алтаря до плавательного бассейна и обратно — самая необычная судьба среди петербургских кирх.",
+text:"Невозможно представить историю немецкого Петербурга без Петрикирхе. Этот храм был главным центром лютеранской общины, объединявшей тысячи жителей города. Его судьба отражает судьбу самого Петербурга: периоды расцвета сменялись испытаниями, но храм сохранился и сегодня вновь выполняет своё первоначальное предназначение."},
+{id:"4.6",z:4,c:["de"],name:"Петришуле",meta:"Невский проспект · с 1709",x:583.8,y:292.9,
+lead:"Старейшая школа Петербурга — и одна из немногих, где немецкий дух пережил две империи и одну революцию.",
+text:"Прогуливаясь по Невскому проспекту, легко пройти мимо старейшей школы Петербурга и даже не заметить её. А между тем именно здесь несколько столетий воспитывались поколения жителей города. Основанная немецкой общиной, Петришуле стала важным центром образования и культурного обмена между Россией и Германией."},
+{id:"4.7",z:4,c:["de"],name:"Гёте-институт",meta:"Центр города · с 1951",x:486.2,y:332.5,
+lead:"Современный наследник Петришуле — институт, через который Германия говорит с Петербургом сегодня.",
+text:"Если многие локусы маршрута рассказывают о прошлом, то Гёте-институт переносит нас в настоящее. Здесь проходят языковые курсы, выставки, кинопоказы и встречи, знакомящие петербуржцев с современной Германией. Это место показывает, что культурный диалог между Петербургом и немецким миром продолжается и сегодня."},
+{id:"5.1",z:5,c:["de"],name:"Университет Лесгафта",meta:"За пределами центра",x:381.5,y:417.2,
+lead:"Сын немецкого ювелира научил Россию относиться к спорту как к науке.",
+text:"Чем дальше маршрут уводит нас от исторического центра, тем неожиданнее становятся культурные следы города. Основатель университета Пётр Лесгафт был сыном немецкого ювелира и сумел изменить представление о физическом воспитании в России. Благодаря его идеям спорт перестал быть просто развлечением и стал частью научного знания о человеке."},
+{id:"5.2",z:5,c:["it"],name:"Цирк Чинизелли",meta:"Набережная Фонтанки",x:681.8,y:266.5,
+lead:"Купол без внутренних опор — петербуржцы XIX века воспринимали его как инженерное чудо, подаренное итальянцем.",
+text:"Когда цирк Чинизелли открылся в XIX веке, петербуржцы воспринимали его как настоящее чудо. Огромный купол без внутренних опор казался почти невозможным с инженерной точки зрения. Итальянский артист и предприниматель Гаэтано Чинизелли подарил городу не просто цирк, а один из самых узнаваемых символов петербургской культуры."},
+{id:"5.3",z:5,c:["it"],name:"Большой каскад Петергофа",meta:"Петергоф (пригород)",x:62,y:452,off:true,
+lead:"Барочный спектакль воды и золота — итальянские виллы XVII века, перенесённые на берег Финского залива.",
+text:"Путешествие завершается за пределами Петербурга — там, где вода, золото и архитектура превращаются в настоящий спектакль. Большой каскад Петергофа напоминает о влиянии итальянского барокко, вдохновлявшего архитекторов и художников XVIII века. Здесь особенно ясно видно, как европейские идеи преобразовывались в уникальный петербургский образ."}
+];
+/* ---------- ЗОНЫ + СИЛУЭТЫ (рисуются при скролле, как в TASS) ---------- */
+var ZONES={
+1:{t:"Васильевский остров",sub:"<b>9 локусов</b> · 1 французский · 1 итальянский · 7 немецких",note:"Самая насыщенная зона маршрута — отсюда начинается квест.",
+sil:'<svg class="bld" viewBox="0 0 320 230" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'
++'<path data-draw d="M40 206 H280"/>'
++'<path data-draw d="M176 206 V150 L213 132 L250 150 V206"/>'
++'<path data-draw d="M190 206 V150 M205 206 V150 M222 206 V150 M237 206 V150"/>'
++'<path data-draw d="M112 206 L118 64 M146 206 L140 64 M108 206 H150"/>'
++'<path data-draw d="M118 116 L96 128 M140 116 L162 128 M118 150 L98 160 M140 150 L160 160"/>'
++'<path data-draw d="M126 64 L126 50 L132 50 L132 64"/>'
++'<circle class="fillpart" cx="129" cy="42" r="8" fill="currentColor" stroke="none"/></svg>'},
+2:{t:"Невский проспект",sub:"<b>4 локуса</b> · 2 французских · 1 итальянский · 1 немецкий",note:"Единственная точка реального пересечения культур во всём маршруте.",
+sil:'<svg class="bld" viewBox="0 0 320 230" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'
++'<path data-draw d="M30 206 H290"/>'
++'<path data-draw d="M84 206 V120 L160 78 L236 120 V206"/>'
++'<path data-draw d="M84 120 L160 96 L236 120"/>'
++'<path data-draw d="M104 206 V126 M132 206 V120 M188 206 V120 M216 206 V120"/>'
++'<path data-draw d="M150 78 V52 a10 10 0 0 1 20 0 V78"/>'
++'<path data-draw d="M160 52 V36 M152 44 H168"/></svg>'},
+3:{t:"Центр / Дворцовая набережная",sub:"<b>6 локусов</b> · 2 французских · 2 немецких · 2 итальянских",note:"Самая «дипломатическая» зона маршрута.",
+sil:'<svg class="bld" viewBox="0 0 320 230" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'
++'<path data-draw d="M24 206 H296"/>'
++'<path data-draw d="M56 206 V150 H264 V206"/>'
++'<path data-draw d="M72 206 V150 M96 206 V150 M224 206 V150 M248 206 V150"/>'
++'<path data-draw d="M132 150 V112 H188 V150"/>'
++'<path data-draw d="M126 112 a34 34 0 0 1 68 0"/>'
++'<path data-draw d="M150 78 a14 14 0 0 1 20 0"/>'
++'<path data-draw d="M160 64 V46 M152 54 H168"/>'
++'<path data-draw d="M70 150 V128 M250 150 V128"/></svg>'},
+4:{t:"Смольный / Литейный",sub:"<b>7 локусов</b> · 3 французских · 4 немецких",note:"Зона образования, религии и богемы.",
+sil:'<svg class="bld" viewBox="0 0 320 230" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'
++'<path data-draw d="M28 206 H292"/>'
++'<path data-draw d="M96 206 V126 H224 V206"/>'
++'<path data-draw d="M150 126 V92 a30 26 0 0 1 20 0 V126"/>'
++'<path data-draw d="M148 92 q12 -34 24 0"/>'
++'<path data-draw d="M160 58 V40 M153 48 H167"/>'
++'<path data-draw d="M104 126 V104 a16 14 0 0 1 16 0 V126"/>'
++'<path data-draw d="M104 104 q8 -22 16 0"/>'
++'<path data-draw d="M200 126 V104 a16 14 0 0 1 16 0 V126"/>'
++'<path data-draw d="M200 104 q8 -22 16 0"/>'
++'<path data-draw d="M112 84 V74 M208 84 V74"/></svg>'},
+5:{t:"За пределами центра",sub:"<b>3 локуса</b> · 1 немецкий · 2 итальянских",note:"Финальная, самая зрелищная зона маршрута.",
+sil:'<svg class="bld" viewBox="0 0 320 230" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'
++'<path data-draw d="M20 206 H300"/>'
++'<path data-draw d="M48 150 H272 V120 H48 Z"/>'
++'<path data-draw d="M132 120 V92 H188 V120"/>'
++'<path data-draw d="M126 92 a34 30 0 0 1 68 0"/>'
++'<path data-draw d="M160 62 V46 M152 54 H168"/>'
++'<path data-draw d="M70 120 V150 M96 120 V150 M224 120 V150 M250 120 V150"/>'
++'<path data-draw d="M120 150 H200 M132 168 H188 M144 186 H176"/>'
++'<path data-draw d="M140 168 V158 M160 168 V156 M180 168 V158"/></svg>'}
+};
+/* ---------- ВИДЕО (3 плеера) ---------- */
+/* Пример: VIDEOS[0].src = "https://www.youtube.com/embed/ВАШ_ID"; */
+var VIDEOS=[
+{cap:"Видео 1 · Немецкий Петербург",src:"https://drive.google.com/file/d/1rAYARvS9NGdKm7gb4iowBYpQXMlParFC/preview"},
+{cap:"Видео 2 · Французский Петербург",src:"https://drive.google.com/file/d/1W-EwX7BQx6ivNYK9a3XRyxEGDyiB1dB7/preview"},
+{cap:"Видео 3 · Итальянский Петербург",src:"https://www.youtube.com/embed/4ehggRoeadg"}
+];
+/* ===================== СОСТОЯНИЕ КВЕСТА ===================== */
+var KEY="gkt_opened_v1", opened;
+try{opened=new Set(JSON.parse(localStorage.getItem(KEY)||"[]"));}catch(e){opened=new Set();}
+var TOTAL=L.length;
+function save(){try{localStorage.setItem(KEY,JSON.stringify([].slice.call(opened)));}catch(e){}}
+function $(s,p){return (p||root).querySelector(s);}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function byId(id){return L.filter(function(x){return x.id===id})[0];}
+function cultClass(c){return c.length>1?"frit":c[0];}
+function badge(c){
+if(c.length>1)return '<span class="gkt-badge frit">🇫🇷 + 🇮🇹 · Пересечение</span>';
+var f={fr:"🇫🇷",de:"🇩🇪",it:"🇮🇹"}[c[0]];
+return '<span class="gkt-badge '+c[0]+'">'+f+" "+CULTNAME[c[0]]+"</span>";
+}
+function imgFor(o){return IMG[o.id]||fallback(o.name,o.c);}
+/* ===================== РЕНДЕР: список зон в блоке 1 ===================== */
+/* склонение слова «локус» по числу: 1 локус, 2–4 локуса, 5+ локусов */
+function plocus(n){var d=n%10,h=n%100;if(d===1&&h!==11)return"локус";if(d>=2&&d<=4&&(h<10||h>=20))return"локуса";return"локусов";}
+(function(){
+var box=$("#gkt-zonelist");
+for(var z=1;z<=5;z++){
+var cnt=L.filter(function(x){return x.z===z}).length;
+var c=el("div","gkt-zonecip","<b>"+z+"</b><span>"+ZONES[z].t+"<br>"+cnt+" "+plocus(cnt)+"</span>");
+(function(zz){c.addEventListener("click",function(){scrollToEl($("#gkt-zone-"+zz));});})(z);
+box.appendChild(c);
+}
+})();
+/* ===================== РЕНДЕР: легенда карты ===================== */
+(function(){
+var box=$("#gkt-legend"), data=[
+{cls:"cult",dot:"fr",t:"Французская"},{cls:"cult",dot:"de",t:"Немецкая"},
+{cls:"cult",dot:"it",t:"Итальянская"},{cls:"cult",dot:"frit",t:"Пересечение FR+IT"}
+];
+data.forEach(function(d){
+box.appendChild(el("span","gkt-legchip "+d.cls,'<span class="dot '+d.dot+'"></span>'+d.t));
+});
+for(var z=1;z<=5;z++){
+var chip=el("span","gkt-legchip","Зона "+z+" · "+ZONES[z].t);
+chip.setAttribute("data-zone",z);
+(function(zz,c){
+c.addEventListener("mouseenter",function(){highlightZone(zz);});
+c.addEventListener("mouseleave",function(){highlightZone(0);});
+c.addEventListener("click",function(){scrollToEl($("#gkt-zone-"+zz));});
+})(z,chip);
+box.appendChild(chip);
+}
+})();
+/* ===================== РЕНДЕР: маркеры на карте ===================== */
+var SVGNS="http://www.w3.org/2000/svg";
+(function(){
+var g=$("#gkt-markers"), tip=$("#gkt-maptip"), svg=$("#gkt-svg");
+L.forEach(function(o){
+if(o.off)return;
+var grp=document.createElementNS(SVGNS,"g");
+grp.setAttribute("class","gkt-mk "+cultClass(o.c)+(opened.has(o.id)?" opened":""));
+grp.setAttribute("data-zone",o.z); grp.setAttribute("data-id",o.id);
+var hit=document.createElementNS(SVGNS,"circle");
+hit.setAttribute("class","hit");hit.setAttribute("cx",o.x);hit.setAttribute("cy",o.y);hit.setAttribute("r",16);
+var ring=document.createElementNS(SVGNS,"circle");
+ring.setAttribute("class","ring");ring.setAttribute("cx",o.x);ring.setAttribute("cy",o.y);ring.setAttribute("r",8);
+var core=document.createElementNS(SVGNS,"circle");
+core.setAttribute("class","core");core.setAttribute("cx",o.x);core.setAttribute("cy",o.y);core.setAttribute("r",4);
+if(o.c.length>1){ // двойная заливка для базилики
+core.setAttribute("r",5);
+ring.setAttribute("stroke-dasharray","16 16");
+}
+grp.appendChild(hit);grp.appendChild(ring);grp.appendChild(core);
+grp.addEventListener("click",function(){openModal(o.id);});
+grp.addEventListener("mousemove",function(ev){
+var r=svg.getBoundingClientRect(), mr=$(".gkt-map").getBoundingClientRect();
+tip.style.left=(ev.clientX-mr.left)+"px"; tip.style.top=(ev.clientY-mr.top)+"px";
+tip.textContent=o.id+" · "+o.name; tip.classList.add("on");
+});
+grp.addEventListener("mouseleave",function(){tip.classList.remove("on");});
+g.appendChild(grp);
+});
+// Петергоф — инсет за пределами карты
+var pg=$("#gkt-peterhof"), pet=byId("5.3");
+var line=document.createElementNS(SVGNS,"path");
+line.setAttribute("d","M150 470 L"+(pet.x+14)+" "+(pet.y-6));
+line.setAttribute("stroke","#b9b1a1");line.setAttribute("stroke-width","1.4");line.setAttribute("stroke-dasharray","5 5");line.setAttribute("fill","none");
+pg.appendChild(line);
+var pnode=document.createElementNS(SVGNS,"g");
+pnode.setAttribute("class","gkt-mk it gkt-pet-node"+(opened.has("5.3")?" opened":""));
+pnode.setAttribute("data-id","5.3");
+var pr=document.createElementNS(SVGNS,"circle");pr.setAttribute("class","ring");pr.setAttribute("cx",pet.x);pr.setAttribute("cy",pet.y);pr.setAttribute("r",8);
+var pc=document.createElementNS(SVGNS,"circle");pc.setAttribute("class","core");pc.setAttribute("cx",pet.x);pc.setAttribute("cy",pet.y);pc.setAttribute("r",4);
+pnode.appendChild(pr);pnode.appendChild(pc);
+pnode.addEventListener("click",function(){openModal("5.3");});
+pg.appendChild(pnode);
+var lab=document.createElementNS(SVGNS,"text");
+lab.setAttribute("x",pet.x);lab.setAttribute("y",pet.y+24);lab.setAttribute("text-anchor","middle");
+lab.setAttribute("fill","#8a93a0");lab.setAttribute("font-size","13");lab.setAttribute("font-family","Inter,sans-serif");
+lab.textContent="Петергоф ≈30 км ↙"; pg.appendChild(lab);
+})();
+function highlightZone(z){
+root.querySelectorAll(".gkt-mk").forEach(function(m){
+if(!z){m.classList.remove("dim","flash");return;}
+if(+m.getAttribute("data-zone")===z){m.classList.remove("dim");m.classList.add("flash");}
+else{m.classList.add("dim");m.classList.remove("flash");}
+});
+}
+/* ===================== РЕНДЕР: видео ===================== */
+(function(){
+var box=$("#gkt-videogrid");
+VIDEOS.forEach(function(v){
+var inner;
+if(v.src){inner='<div class="gkt-vid__ratio"><iframe src="'+v.src+'" allow="autoplay; encrypted-media; fullscreen" allowfullscreen loading="lazy"></iframe></div>';}
+else if(v.href){inner='<div class="gkt-vid__ratio"><a class="gkt-vid__ph" style="cursor:pointer;text-decoration:none;color:#dfe5ea" href="'+v.href+'" target="_blank" rel="noopener"><div class="gkt-vid__play"></div><span>Смотреть видео →</span></a></div>';}
+else{inner='<div class="gkt-vid__ratio"><div class="gkt-vid__ph"><div class="gkt-vid__play"></div><span>Видео скоро появится</span></div></div>';}
+box.appendChild(el("div","gkt-vid reveal",inner+'<div class="gkt-vid__cap">'+v.cap+"</div>"));
+});
+})();
+/* ===================== РЕНДЕР: маршрут (зоны + карточки) ===================== */
+(function(){
+var route=$("#gkt-route");
+for(var z=1;z<=5;z++){
+var Z=ZONES[z];
+var sec=el("section","gkt-zone");sec.id="gkt-zone-"+z;
+var head=el("div","gkt-zhead");
+head.innerHTML='<span class="gkt-zbignum">'+z+'</span>'
++'<div class="gkt-zsil">'+Z.sil+'</div>'
++'<div class="gkt-zlabel"><span class="gkt-eyebrow">Зона '+z+'</span>'
++'<h2>'+Z.t+'</h2><p class="gkt-zsub">'+Z.sub+'</p>'
++'<p class="gkt-zsub">'+Z.note+'</p></div>';
+sec.appendChild(head);
+var cards=el("div","gkt-cards");
+L.filter(function(x){return x.z===z}).forEach(function(o){
+var card=el("article","gkt-card");card.id="gkt-card-"+o.id;card.setAttribute("data-id",o.id);
+card.innerHTML=
+'<div class="gkt-card__media"><span class="gkt-card__num">'+o.id+'</span>'
++'<img alt="'+esc(o.name)+'" loading="lazy" src="'+imgFor(o)+'" data-fb="'+esc(o.name)+'" data-c="'+o.c[0]+'"></div>'
++'<div class="gkt-card__body">'+badge(o.c)
++'<h3 class="gkt-card__name">'+esc(o.name)+'</h3>'
++'<p class="gkt-card__meta">'+esc(o.meta)+'</p>'
++'<p class="gkt-card__lead">'+esc(o.lead)+'</p>'
++'<p class="gkt-card__text">'+esc(o.text)+'</p>'
++'<p class="gkt-card__src">Источник: <b>['+srcByCult(o.c)+']</b></p></div>';
+cards.appendChild(card);
+});
+sec.appendChild(cards);
+route.appendChild(sec);
+}
+// фолбэк для битых фото
+root.querySelectorAll(".gkt-card__media img").forEach(function(im){
+im.addEventListener("error",function(){
+if(im.dataset.failed)return; im.dataset.failed="1";
+im.src=fallback(im.dataset.fb,[im.dataset.c]);
+});
+});
+})();
+/* ===================== ПРОГРЕСС / ПАСПОРТ ===================== */
+$("#gkt-pt").textContent=TOTAL; $("#gkt-pass-total").textContent=TOTAL;
+function counts(){
+var c={fr:0,de:0,it:0,all:0};
+opened.forEach(function(id){var o=byId(id);if(!o)return;c.all++;o.c.forEach(function(k){c[k]++;});});
+return c;
+}
+function refresh(){
+var c=counts(), pct=Math.round(c.all/TOTAL*100);
+$("#gkt-pc").textContent=c.all; $("#gkt-pf").style.width=pct+"%";
+$("#gkt-pass-num").textContent=c.all; $("#gkt-pass-bar").style.width=pct+"%";
+$("#gkt-pass-fr").textContent=c.fr; $("#gkt-pass-de").textContent=c.de; $("#gkt-pass-it").textContent=c.it;
+}
+function open(id){
+var first=!opened.has(id);
+if(first){opened.add(id);save();refresh();}
+var mk=root.querySelector('.gkt-mk[data-id="'+id+'"]'); if(mk)mk.classList.add("opened");
+}
+refresh();
+// отметить уже открытые маркеры
+opened.forEach(function(id){var mk=root.querySelector('.gkt-mk[data-id="'+id+'"]');if(mk)mk.classList.add("opened");});
+/* ===================== МОДАЛКА ===================== */
+var modal=$("#gkt-modal"), mCur=null;
+function openModal(id){
+var o=byId(id);if(!o)return;mCur=id;
+var im=$("#gkt-m-img"); im.src=imgFor(o); im.alt=o.name;
+im.onerror=function(){im.onerror=null;im.src=fallback(o.name,o.c);};
+var b=$("#gkt-m-badge"); b.className="gkt-badge "+cultClass(o.c);
+b.innerHTML=o.c.length>1?"🇫🇷 + 🇮🇹 · Пересечение":({fr:"🇫🇷",de:"🇩🇪",it:"🇮🇹"}[o.c[0]]+" "+CULTNAME[o.c[0]]);
+$("#gkt-m-name").textContent=o.name;
+$("#gkt-m-meta").textContent=o.meta;
+$("#gkt-m-lead").textContent=o.lead;
+modal.classList.add("on"); document.body.style.overflow="hidden";
+}
+function closeModal(){modal.classList.remove("on");document.body.style.overflow="";}
+modal.querySelectorAll("[data-close]").forEach(function(b){b.addEventListener("click",closeModal);});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeModal();});
+$("#gkt-m-more").addEventListener("click",function(){
+var id=mCur, card=document.getElementById("gkt-card-"+id);
+closeModal(); open(id);
+if(!card){return;}
+setTimeout(function(){
+var y=card.getBoundingClientRect().top+window.pageYOffset-72;
+try{ window.scrollTo({top:y,behavior:"smooth"}); }
+catch(e){ window.scrollTo(0,y); }
+},70);
+});
+/* ===================== СКРОЛЛ + АНИМАЦИИ ===================== */
+function scrollToEl(t){if(!t)return;var y=t.getBoundingClientRect().top+window.pageYOffset-70;window.scrollTo({top:y,behavior:"smooth"});}
+$("#gkt-start").addEventListener("click",function(){scrollToEl($("#gkt-intro"));});
+// reveal + карточки + силуэты + авто-открытие локусов
+var io=new IntersectionObserver(function(entries){
+entries.forEach(function(en){
+if(!en.isIntersecting)return;
+var t=en.target;
+t.classList.add("in");
+if(t.classList.contains("gkt-card")){var id=t.getAttribute("data-id");if(id)open(id);}
+io.unobserve(t);
+});
+},{threshold:.18,rootMargin:"0px 0px -8% 0px"});
+root.querySelectorAll(".reveal,.gkt-card").forEach(function(e){io.observe(e);});
+// силуэты зон (рисуются)
+var ioS=new IntersectionObserver(function(entries){
+entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add("in");ioS.unobserve(en.target);}});
+},{threshold:.3});
+root.querySelectorAll(".gkt-zsil").forEach(function(e){ioS.observe(e);});
+// sticky-прогресс появляется после обложки
+var pbar=$("#gkt-progress"), hero=$("#gkt-top");
+var ioP=new IntersectionObserver(function(entries){
+entries.forEach(function(en){ pbar.classList.toggle("is-on",!en.isIntersecting); });
+},{threshold:0});
+ioP.observe(hero);
+// параллакс (обложка + силуэты) — мягкий
+var heroBg=$("#gkt-hero-bg"), sils=[];
+root.querySelectorAll(".gkt-zsil .bld").forEach(function(s){sils.push(s);});
+var ticking=false;
+function parallax(){
+var y=window.pageYOffset;
+if(heroBg){var hr=hero.getBoundingClientRect();if(hr.bottom>0){heroBg.style.transform="translateY("+(y*0.18)+"px)";}}
+sils.forEach(function(s){
+var r=s.getBoundingClientRect();
+if(r.top<window.innerHeight&&r.bottom>0){
+var d=(window.innerHeight-r.top)/window.innerHeight-0.5;
+s.style.transform="translateY("+(d*-22)+"px)";
+}
+});
+ticking=false;
+}
+window.addEventListener("scroll",function(){if(!ticking){ticking=true;requestAnimationFrame(parallax);}},{passive:true});
+parallax();
+/* ===================== ПОДЕЛИТЬСЯ / СБРОС ===================== */
+$("#gkt-share").addEventListener("click",function(){
+var c=counts();
+var txt="Я прошёл маршрут «Город как текст» по Петербургу: открыто "+c.all+" из "+TOTAL+" локусов (🇫🇷 "+c.fr+" · 🇩🇪 "+c.de+" · 🇮🇹 "+c.it+").";
+if(navigator.share){navigator.share({title:"Город как текст",text:txt,url:location.href}).catch(function(){});}
+else if(navigator.clipboard){navigator.clipboard.writeText(txt+" "+location.href).then(function(){alert("Скопировано в буфер обмена:\n\n"+txt);});}
+else{alert(txt);}
+});
+$("#gkt-reset").addEventListener("click",function(){
+if(!confirm("Сбросить прогресс прохождения?"))return;
+opened=new Set();save();refresh();
+root.querySelectorAll(".gkt-mk.opened").forEach(function(m){m.classList.remove("opened");});
+});
+/* кнопка "Вернуться к карте" */
+(function(){
+var toMap=$("#gkt-tomap"), mapSec=$("#gkt-map"), credits=$("#gkt-credits"), t=false;
+if(!toMap||!mapSec)return;
+toMap.addEventListener("click",function(){scrollToEl(mapSec);});
+function upd(){
+var m=mapSec.getBoundingClientRect();
+var endTop=credits?credits.getBoundingClientRect().top:Infinity;
+toMap.classList.toggle("is-on", m.bottom<80 && endTop>window.innerHeight*0.6);
+t=false;
+}
+window.addEventListener("scroll",function(){if(!t){t=true;requestAnimationFrame(upd);}},{passive:true});
+window.addEventListener("resize",upd,{passive:true});
+upd();
+})();
+})();
+</script>
+</div>
+</body>
+</html>
