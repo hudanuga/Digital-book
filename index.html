@@ -82,7 +82,7 @@
 <div class="gkt-wrap">
 <p class="gkt-eyebrow reveal">Ядро маршрута</p>
 <h2 class="gkt-h2 reveal">Интерактивная карта-квест</h2>
-<p class="gkt-lead reveal">Все 29&nbsp;локусов на&nbsp;одной карте Петербурга. Точки расставлены географически — по&nbsp;реальным координатам. Наведите на&nbsp;зону, чтобы подсветить её&nbsp;точки, и&nbsp;кликните по&nbsp;любой из&nbsp;них.</p>
+<p class="gkt-lead reveal">Все 31&nbsp;локус на&nbsp;одной карте Петербурга. Точки расставлены географически — по&nbsp;реальным координатам. Наведите на&nbsp;зону, чтобы подсветить её&nbsp;точки, и&nbsp;кликните по&nbsp;любой из&nbsp;них.</p>
 <div class="gkt-legend reveal" id="gkt-legend"><!-- JS --></div>
 <div class="gkt-map reveal">
 <svg viewBox="0 0 1000 500" class="gkt-map__svg" id="gkt-svg" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Карта Санкт-Петербурга с локусами">
@@ -166,7 +166,8 @@
 <!-- ВСТАВЬТЕ адрес опубликованной 2-й страницы в href ниже -->
 <a class="gkt-appendix reveal" href="science.html">
 <span class="gkt-appendix__body">
-<b>Теоретический каркас проекта</b>
+<b>Научное приложение</b>
+<i>Полная теоретическая база, методология и библиография проекта</i>
 </span>
 <span class="gkt-appendix__arrow" aria-hidden="true">→</span>
 </a>
@@ -771,6 +772,13 @@ var VIDEOS=[
 {cap:"Видео 2 · Французский Петербург",src:"https://drive.google.com/file/d/1W-EwX7BQx6ivNYK9a3XRyxEGDyiB1dB7/preview"},
 {cap:"Видео 3 · Итальянский Петербург",src:"https://www.youtube.com/embed/4ehggRoeadg"}
 ];
+var TIMECODE={
+"1.1":"00:45","1.2":"3:49","1.3":"22:12","1.4":"23:24","1.5":"24:55","1.6":"28:00","1.7":"26:17","1.8":"21:08","1.9":"30:10",
+"2.1":"5:04 (французская), 12:49 (итальянская)","2.2":"3:58","2.3":"2:32","2.4":"11:54",
+"3.1":"2:49","3.2":"3:20","3.3":"19:29","3.4":"16:06","3.5":"14:19","3.6":"5:35",
+"4.1":"8:49","4.2":"6:10","4.3":"7:23","4.4":"4:55","4.5":"6:56","4.6":"10:36","4.7":"12:29",
+"5.1":"14:06","5.2":"10:10","5.3":"8:50"
+};
 /* ===================== СОСТОЯНИЕ КВЕСТА ===================== */
 var KEY="gkt_opened_v1", opened;
 try{opened=new Set(JSON.parse(localStorage.getItem(KEY)||"[]"));}catch(e){opened=new Set();}
@@ -909,7 +917,7 @@ card.innerHTML=
 +'<p class="gkt-card__meta">'+esc(o.meta)+'</p>'
 +'<p class="gkt-card__lead">'+esc(o.lead)+'</p>'
 +'<p class="gkt-card__text">'+esc(o.text)+'</p>'
-+'<p class="gkt-card__src">Источник: <b>['+srcByCult(o.c)+']</b></p></div>';
++'<p class="gkt-card__src">Таймкод в видеоэкскурсии — <b>'+(TIMECODE[o.id]||"—")+'</b></p></div>';
 cards.appendChild(card);
 });
 sec.appendChild(cards);
